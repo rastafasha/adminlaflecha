@@ -1,0 +1,134 @@
+<!-- =======| Main |======= -->
+<div class="container animated fadeInUp" id="main" class="main" role="main" name="users">
+
+    <div class="col-xs-12">
+        <div class="leftside">
+            <!-- Page Title -->
+            <app-back-button [title]="title"></app-back-button>
+        </div>
+        
+        <div class="clear"></div>
+
+        <section class="section dashboard">
+            <button class="btn btn-outline-primary btn-sm rounded-circle shadow-sm" (click)="instruccionesModalUsers.open()"
+                title="Ayuda de la sección">
+                <i class="fa fa-question"></i>
+            </button>
+            <br>
+            <div class="tab-content-set">
+                <ul class="nav">
+                    <li>
+                        <a href="#" onclick="return false;" [ngClass]="{'active': option_selectedd == 1}"
+                            (click)="optionSelected(1)">
+                            <h3 class="btn btn-outline-info"> {{'Usuarios'}}</h3>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="return false;" [ngClass]="{'active': option_selectedd == 2}"
+                            (click)="optionSelected(2)">
+                            <h3 class="btn btn-outline-info">{{'Editores'}}</h3>
+                        </a>
+                    </li>
+
+
+                </ul>
+            </div>
+
+            <div class="tab-content pt-2">
+
+                <div *ngIf="option_selectedd == 1">
+                    <br />
+                    <!-- usuarios -->
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <!-- buscador -->
+                                <form class="form-horizontal">
+                                    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+                                        <div class="input-group">
+                                            <input type="search" name="search" type="text" class="form-control col-xs-12" placeholder="Buscar.." [(ngModel)]="query" aria-describedby="button-addon1" class="form-control border-0 bg-light">
+                                            <div class="input-group-append">
+                                                <button id="button-addon1" type="submit" class="btn btn-link text-primary" (click)="search()" name="submit" data-toggle="tooltip" title="mostrar todos">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                                <a href="javascript:;" (click)="PageSize()" class="btn btn-primary ms-2 "
+                                            style="border-radius: 100px;"><i class="fa fa-refresh"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- buscador -->
+                            </div>
+                        </div>
+                        <div class="card recent-sales overflow-auto">
+                            <app-loading *ngIf="loading"></app-loading>
+                            <div class="card-body" *ngIf="!loading">
+                                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                <table [ngClass]="loading? 'table table-borderless datatable':'table table-borderless'">
+                                    <thead>
+                                        <tr>
+
+                                            <!-- <th>Imagen</th> -->
+                                            <th>Usuario</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Auth</th>
+                                            <th class="text-nowrap">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let user of usuarios  |  paginate: { itemsPerPage: count, currentPage: p }">
+                                        
+                                            <td><a [routerLink]="['/dashboard/user/', user.uid]">{{user.username}}</a> </td>
+                                            <td>{{user.email}}</td>
+                                            <td>
+                                                <!-- {{user.role }}  -->
+                                                <span class="badge bg-dark" *ngIf="user.role === 'SUPERADMIN'">SuperAdmin</span>
+                                                <span class="badge bg-primary" *ngIf="user.role === 'ADMIN'">Admin</span>
+                                                <span class="badge bg-success" *ngIf="user.role === 'EDITOR'">Editor</span>
+                                                <span class="badge bg-success" *ngIf="user.role === 'MEMBER'">Miembro</span>
+                                                <span class="badge bg-danger" *ngIf="user.role === 'USER'">Invitado</span>
+                                            </td>
+                                            <td>
+                                                <span *ngIf="user.google" class="label label-danger">Google</span>
+                                                <span *ngIf="!user.google" class="label label-info">Email</span>
+                                            </td>
+
+                                            <td class="text-nowrap text-center">
+
+                                                <a [routerLink]="['/dashboard/user/edit', user.uid]" class="cursor" data-toggle="tooltip" data-original-title="Edit">
+                                                    <div class="btn btn-success"><i class="fa fa-eye"></i></div>
+                                                </a>
+                                                <a (click)="eliminarUser(user.uid)" class="cursor" data-toggle="tooltip" data-original-title="Borrar">
+                                                    <div class="btn btn-danger"><i class="fa fa-trash"></i></div>
+                                                </a>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+
+                                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- End usuarios -->
+                </div>
+                <div *ngIf="option_selectedd == 2">
+                    <app-editores></app-editores>
+                </div>
+
+
+            </div>
+            <!-- End Bordered Tabs -->
+
+        </section>
+    </div>
+
+</div>
+<!--/main-->
+<app-modal-instrucciones [info]="info" sectionId="Lista_Usuarios" #instruccionesModalUsers></app-modal-instrucciones>

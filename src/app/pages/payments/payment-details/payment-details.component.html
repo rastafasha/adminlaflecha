@@ -1,0 +1,75 @@
+<div class="modal fade" id="viewPago" tabindex="-1" aria-labelledby="pagoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pagoModalLabel">{{title}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="onClose()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                   <div class="row">
+                     <div class="col-xs-12 col-sm-6">
+                        <p><b>Referencia:</b> {{pagoSeleccionado?.referencia}}</p>
+                            <p><b>Nombre de la cuenta:</b>&nbsp;
+                                <a [routerLink]="['/dashboard/user/', usuario?.uid]">{{usuario?.username}}</a>
+                            </p>
+                            <p><b>email de la cuenta:</b> {{usuario.email}}</p>
+                            <p><b>Fecha | Hora:</b> {{pagoSeleccionado?.createdAt | date:'MMM d, y, h:mm:ss a'}}</p>
+                            <p><b>Status:</b>&nbsp;
+                                <span class="badge bg-success" *ngIf="pagoSeleccionado?.status === 'COMPLETED'">Completado</span>
+                                <span class="badge bg-primary" *ngIf="pagoSeleccionado?.status === 'PENDING'">Pendiente</span>
+                                <span class="badge bg-danger" *ngIf="pagoSeleccionado?.status === 'CANCELED'">Rechazado</span>
+                            </p>
+
+                            <p><b>Validación:</b> &nbsp;
+                                <span class="badge bg-success" *ngIf="pagoSeleccionado?.validacion === 'APROVED'">Verificado</span>
+                                <span class="badge bg-primary" *ngIf="pagoSeleccionado?.validacion === 'PENDING'">Pendiente</span>
+                                <span class="badge bg-danger" *ngIf="pagoSeleccionado?.validacion === 'REJECTED'">Rechazado</span>
+                            </p>
+
+                            <p><b>Monto:</b> {{pagoSeleccionado?.monto | currency}}</p>
+
+                            <div *ngIf="pagoSeleccionado">
+                                <p><b>blog:</b></p>
+                                <ul>
+                                    <li *ngFor="let item of blog">{{item.name}}</li>
+                                </ul>
+                            </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <form enctype="multipart/form-data" [formGroup]="paymentForm">
+                            <div class="form-group" style="margin-bottom: 25px;">
+                                <label for="exampleInputuname">Validación<span class="required">*</span></label>
+                                <div class="input-group">
+                                    <select name="" id="input" class="form-control" formControlName="validacion"
+                                        required="required">
+                                        <option value="">Seleccione</option>
+                                        <option value="APROVED">Aprobado</option>
+                                        <option value="PENDING">Pendiente</option>
+                                        <option value="REJECTED">Rechazado</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <button (click)="updatePago()" class="btn btn-outline-success">
+                                        Validar
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                   </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="onClose()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

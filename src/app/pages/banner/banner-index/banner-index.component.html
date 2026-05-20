@@ -1,0 +1,115 @@
+<!-- =======| Main |======= -->
+<div class="container animated fadeInUp" id="main" class="main" role="main" name="users">
+
+    <div class="col-xs-12">
+        <div class="leftside">
+            <app-back-button [title]="title"></app-back-button>
+        </div>
+        <div class="clear"></div>
+        <section class="section dashboard">
+            <button class="btn btn-outline-primary btn-sm rounded-circle shadow-sm" (click)="instruccionesModalBanner.open()"
+                title="Ayuda de la sección">
+                <i class="fa fa-question"></i>
+            </button>
+            <br>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-11 col-sm-11">
+                    </div>
+                    <div class="col-xs-1 col-sm-1">
+                        <div class="text-right">
+                            <button (click)="openEditModal()" class="btn btn-outline-success"
+                                            data-toggle="tooltip" data-original-title="Edit"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editBanner">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card recent-sales overflow-auto">
+                    <app-loading *ngIf="loading"></app-loading>
+                    <div class="card-body" *ngIf="!loading">
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                        <table [ngClass]="loading? 'table table-borderless datatable':'table table-borderless'">
+                            <thead>
+                                <tr>
+                                    <th>Imagen</th>
+                                    <th>Nombre</th>
+                                    <th>target</th>
+                                    <th>Nombre Boton</th>
+                                    <th>Status</th>
+                                    <th>Activar</th>
+                                    <th class="text-nowrap">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let banner of banners |  paginate: { itemsPerPage: count, currentPage: p }">
+                                    <td>
+                                        <div class="image">
+                                            <div *ngIf="!banner.img ">
+                                                <img [src]="banner.img | imagenPipe: 'banners'"
+                                                    style="height: 50px; width: 50px;" class="img-circle avatar">
+                                            </div>
+                                            <div *ngIf="banner.img">
+                                                <img [src]="banner.img | imagenPipe: 'banners'"
+                                                    style="height: 50px; width: 50px;" class="img-circle avatar">
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{banner.titulo}}</td>
+                                    <td>{{banner.target}}</td>
+                                    <td>{{banner.botonName}}</td>
+                                    <td>
+                                        <!-- {{plan.status }} -->
+                                        <span class="badge bg-success"
+                                            *ngIf="banner.status === 'Activo'">Publicado</span>
+                                        <span class="badge bg-danger" *ngIf="banner.status === 'Desactivado'">No
+                                            Publicado</span>
+                                    </td>
+                                    <td>
+                                        
+                                         <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                [id]="'switch' + banner._id" [checked]="banner.status === 'Activo'"
+                                                (change)="toggleStatus(banner)">
+                                            <label class="form-check-label" [for]="'switch' + banner._id">
+                                                {{ banner.status }}
+                                            </label>
+                                        </div>
+
+
+                                    </td>
+                                    <td class="text-nowrap text-center">
+                                         <button (click)="onEditProject(banner)" class="btn btn-outline-success"
+                                            data-toggle="tooltip" data-original-title="Edit"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editBanner">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                         &nbsp;
+                                        <button (click)="eliminarCurso(banner._id)" class="btn btn-outline-danger" data-toggle="tooltip"
+                                            data-original-title="Borrar">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- End Recent Pagos -->
+
+        </section>
+    </div>
+
+</div>
+<!--/main-->
+<app-banner-edit (refreshBannerList)="getBanners()" [bannerSeleccionado]="bannerSeleccionado" (closeModal)="onClose()" #editBanner></app-banner-edit>
+<app-modal-instrucciones [info]="info" sectionId="Banner" #instruccionesModalBanner></app-modal-instrucciones>

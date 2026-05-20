@@ -1,0 +1,86 @@
+<!-- =======| Main |======= -->
+<div class="container animated fadeInUp" id="main" class="main" role="main" name="profile">
+
+    <div class="col-xs-12">
+        <div class="leftside">
+            <!-- Page Title -->
+            <app-back-button [title]="title"></app-back-button>
+        </div>
+
+        <div class="clear"></div>
+
+        <section class="section dashboard">
+
+
+
+            <!-- Recent Pagos -->
+            <div class="col-12">
+                <div class="card recent-sales overflow-auto">
+
+
+                    <div class="card-body">
+                        <h5 class="card-title"> 
+                            <i class="bi bi-currency-exchange"> </i> Transacciones 
+                            <span>| Todas</span>
+                        </h5>
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                        <table class="table table-borderless datatable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Imagen</th>
+                                    <th scope="col">Referencia</th>
+                                    <th scope="col">Metodo </th>
+                                    <th scope="col">Monto</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Validación</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr
+                                    *ngFor="let userpayment of userPagos|  paginate: { itemsPerPage: count, currentPage: p } ">
+
+
+                                    <td>
+                                        <img [src]="userpayment.img | imagenPipe: 'pagos'"
+                                            style="width:60px; height: 60px;" alt="">
+                                    </td>
+                                    <th scope="row"><a
+                                            [routerLink]="['/dashboard/payment-detail', userpayment._id]">{{userpayment.referencia}}</a>
+                                    </th>
+
+                                    <td>{{userpayment.metodo}}</td>
+                                    <td>{{userpayment.monto}} </td>
+                                    <td>{{userpayment.createdAt | date:'MMM d, y, h:mm:ss a'}}</td>
+                                    <td>
+                                        <span class="badge bg-success"
+                                            *ngIf="userpayment.status === 'COMPLETED'">Completado</span>
+                                        <span class="badge bg-primary"
+                                            *ngIf="userpayment.status === 'PENDING'">Pendiente</span>
+                                        <span class="badge bg-danger"
+                                            *ngIf="userpayment.status === 'CANCELED'">Rechazado</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-success"
+                                            *ngIf="userpayment.validacion === 'APROVED'">Aprobado</span>
+                                        <span class="badge bg-primary"
+                                            *ngIf="userpayment.validacion === 'PENDING'">Pendiente</span>
+                                        <span class="badge bg-danger"
+                                            *ngIf="userpayment.validacion === 'REJECTED'">Rechazado</span>
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                    </div>
+
+                </div>
+            </div>
+            <!-- End Recent Pagos -->
+        </section>
+    </div>
+</div>
+<!-- End #main-->

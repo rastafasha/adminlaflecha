@@ -1,0 +1,125 @@
+<!-- =======| Main |======= -->
+<div class="container animated fadeInUp" id="main" class="main" role="main" name="users">
+
+    <div class="col-xs-12">
+        <div class="leftside">
+            <!-- Page Title -->
+            <app-back-button [title]="title"></app-back-button>
+        </div>
+
+
+        <div class="clear"></div>
+
+
+        <section class="section dashboard">
+
+
+            <!-- Recent Pagos -->
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-11 col-sm-11">
+                        <!-- buscador -->
+                        <!-- <app-search></app-search> -->
+                        <!-- buscador -->
+                    </div>
+                    <div class="col-xs-1 col-sm-1">
+                        <div class="text-right">
+                           <button (click)="openEditModal()" class="btn btn-outline-success"
+                                            data-toggle="tooltip" data-original-title="Edit"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editAd">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card recent-sales overflow-auto">
+
+
+                    <app-loading *ngIf="loading"></app-loading>
+                    <div class="card-body" *ngIf="!loading">
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                        <table [ngClass]="loading? 'table table-borderless datatable':'table table-borderless'">
+                            <thead>
+                                <tr>
+                                    <th>Imagen</th>
+                                    <th>Nombre</th>
+                                    <th>target</th>
+                                    <th>Status</th>
+                                    <th>Accion</th>
+                                    <th class="text-nowrap">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    *ngFor="let sideadvice of sideadvices |  paginate: { itemsPerPage: count, currentPage: p }">
+
+                                    <td>
+                                        <div class="image">
+                                            <div *ngIf="!sideadvice.img ">
+                                                <img src="./assets/images/no-image.jpg" style="width:50px; height:50px"
+                                                    class="rounded-circle">
+                                            </div>
+                                            <div *ngIf="sideadvice.img">
+                                                <img [src]="sideadvice.img | imagenPipe: 'sideadvertisings'"
+                                                    style="height: 50px; width: 50px;" class="img-circle avatar">
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{sideadvice.titulo}}</td>
+                                    <td>{{sideadvice.target}}</td>
+                                    <td>
+                                        <!-- {{plan.status }} -->
+                                        <span class="badge bg-success"
+                                            *ngIf="sideadvice.status === 'Activo'">Publicado</span>
+                                        <span class="badge bg-danger" *ngIf="sideadvice.status === 'Desactivado'">No
+                                            Publicado</span>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                [id]="'switch' + sideadvice._id"
+                                                [checked]="sideadvice.status === 'Activo'"
+                                                (change)="toggleStatus(sideadvice)">
+                                            <label class="form-check-label" [for]="'switch' + sideadvice._id">
+                                                {{ sideadvice.status }}
+                                            </label>
+                                        </div>
+
+                                    </td>
+                                    <td class="text-nowrap text-center">
+                                        
+                                        <button (click)="onEditProject(sideadvice)" class="btn btn-outline-success"
+                                            data-toggle="tooltip" data-original-title="Edit"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editAd">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                         &nbsp;
+                                        <button (click)="eliminarCurso(sideadvice._id)" class="btn btn-outline-danger" data-toggle="tooltip"
+                                            data-original-title="Borrar">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- End Recent Pagos -->
+
+        </section>
+    </div>
+
+</div>
+
+<app-lateral-edit (refreshAdList)="getAds()" [adSeleccionado]="adSeleccionado" (closeModal)="onClose()" #editAd></app-lateral-edit>

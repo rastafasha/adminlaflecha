@@ -1,0 +1,50 @@
+<div class="modal fade" id="editSpeciality" tabindex="-1" aria-labelledby="specialityModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="specialityModalLabel">{{title}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="onClose()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <form enctype="multipart/form-data" [formGroup]="specialityForm">
+                            <div class="form-group" style="margin-bottom: 25px;">
+                                <label for="exampleInputuname">Nombre<span class="required">*</span></label>
+                                <div class="input-group">
+
+                                    <input type="text" formControlName="nombre" class="form-control"
+                                        id="exampleInputuname" placeholder="Nombre" required>
+                                        <div *ngIf="specialityForm.get('nombre')?.touched && specialityForm.get('nombre')?.invalid"
+                                            class="text-danger">
+                                            <div *ngIf="specialityForm.get('nombre')?.errors?.['required']">
+                                                Campo Requerido
+                                            </div>
+                                            <div *ngIf="specialityForm.get('nombre')?.errors?.['minlength']">
+                                                Coloque un Email Valido
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-6">
+                                    <button (click)="updateCategory()" class="btn btn-outline-success">
+                                        {{ especSeleccionado ? 'Actualizar ' : 'Crear' }}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="onClose()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

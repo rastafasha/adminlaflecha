@@ -1,0 +1,237 @@
+<!-- =======| Main |======= -->
+
+<div class="modal fade" id="editPost" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="postModalLabel">{{title}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="onClose()"></button>
+            </div>
+            <div class="modal-body">
+                <app-loading *ngIf="isLoading"></app-loading>
+                <div class="container" *ngIf="!isLoading">
+                    <div class="row">
+
+                        <!-- Step Indicator -->
+                        <div class="step-indicator m-t-20 m-b-20">
+                            <div class="step" [ngClass]="{'active': currentStep >= 1, 'completed': currentStep > 1}">
+                                <span class="step-number">1</span>
+                                <span class="step-label">Datos</span>
+                            </div>
+                            <div class="step-line"></div>
+                            <div class="step" [ngClass]="{'active': currentStep >= 2}">
+                                <span class="step-number">2</span>
+                                <span class="step-label">Imagen</span>
+                            </div>
+                        </div>
+                        <!-- editar/crear post -->
+                        <div *ngIf="currentStep === 1">
+                            <form enctype="multipart/form-data" [formGroup]="postForm" (ngSubmit)="editPost()">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Titulo <span class="required">*</span></label>
+                                    <input formControlName="name" type="text" class="form-control" required>
+                                    <div *ngIf="postForm.get('name')?.touched && postForm.get('name')?.invalid"
+                                        class="text-danger">
+                                        <div *ngIf="postForm.get('name')?.errors?.['required']">
+                                            Campo Requerido
+                                        </div>
+                                        <div *ngIf="postForm.get('name')?.errors?.['minlength']">
+                                            Coloque Un Nombre
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <input class="form-control form-control-sm" type="text" placeholder="slug"
+                                        formControlName="slug" readonly>
+                                </div>
+                                <div class="row">
+                                    <div class="form-groupcol-xs-12 col-sm-4">
+                                        <label for="select-input">Categoria <span class="required">*</span></label>
+                                        <select class="form-control " formControlName="categoria" required>
+                                            <option disabled value="seleccione">SELECCIONAR</option>
+                                            <option *ngFor="let item of categorias" [value]="item._id">
+                                                {{item.nombre}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="postForm.get('categoria')?.touched && postForm.get('categoria')?.invalid"
+                                            class="text-danger">
+                                            <div *ngIf="postForm.get('categoria')?.errors?.['required']">
+                                                Campo Requerido
+                                            </div>
+                                            <div *ngIf="postForm.get('categoria')?.errors?.['minlength']">
+                                                Seleccione una opción
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-4">
+                                        <label for="select-input">Destacado?<span class="required">*</span></label>
+                                        <select class="form-control " formControlName="isFeatured" required>
+                                            <option disabled value="">SELECCIONAR</option>
+                                            <option value="true">Activo</option>
+                                            <option value="false">Inactivo</option>
+                                        </select>
+                                        <div *ngIf="postForm.get('isFeatured')?.touched && postForm.get('isFeatured')?.invalid"
+                                            class="text-danger">
+                                            <div *ngIf="postForm.get('isFeatured')?.errors?.['required']">
+                                                Campo Requerido
+                                            </div>
+                                            <div *ngIf="postForm.get('isFeatured')?.errors?.['minlength']">
+                                                Seleccione una opción
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <div class="form-group col-xs-12 col-sm-4">
+                                        <label for="exampleInputEmail1">Precio <span class="required">*</span></label>
+                                        <input formControlName="price" type="number" min="0" class="form-control"
+                                            required>
+                                        <div *ngIf="postForm.get('price')?.touched && postForm.get('price')?.invalid"
+                                            class="text-danger">
+                                            <div *ngIf="postForm.get('price')?.errors?.['required']">
+                                                Campo Requerido
+                                            </div>
+                                            <div *ngIf="postForm.get('price')?.errors?.['minlength']">
+                                                Coloque un precio mínimo
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-xs-12 col-sm-6">
+                                        <label>Descripción corta para carrito<span class="required">*</span></label>
+                                        <textarea formControlName="adicional" id="adicional" cols="30" rows="4"
+                                            class="form-control" required></textarea>
+                                        <!-- <ckeditor [editor]="Editor" (ready)="onReady($event)" data="<p>Hello, world!</p>" formControlName="adicional" value="description" rows="5" class="form-control" required></ckeditor> -->
+                                        <div *ngIf="postForm.get('adicional')?.touched && postForm.get('adicional')?.invalid"
+                                            class="text-danger">
+                                            <div *ngIf="postForm.get('adicional')?.errors?.['required']">
+                                                Campo Requerido
+                                            </div>
+                                            <div *ngIf="postForm.get('adicional')?.errors?.['minlength']">
+                                                Coloque una Descripción corta para mostrar en la factura
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6">
+                                        <label>Intro para el home<span class="required">*</span></label>
+                                        <textarea formControlName="introhome" id="introhome" cols="30" rows="4"
+                                            class="form-control" required></textarea>
+
+                                        <!-- <ckeditor [editor]="Editor1" (ready)="onReady($event)" data="<p>Hello, world!</p>"
+                            formControlName="introhome" value="introhome" rows="5" class="form-control"
+                            required></ckeditor> -->
+                                        <div *ngIf="postForm.get('introhome')?.touched && postForm.get('introhome')?.invalid"
+                                            class="text-danger">
+                                            <div *ngIf="postForm.get('introhome')?.errors?.['required']">
+                                                Campo Requerido
+                                            </div>
+                                            <div *ngIf="postForm.get('introhome')?.errors?.['minlength']">
+                                                Coloque una Descripción corta para mostrar en el home
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Descripción <span class="required">*</span></label>
+                                    <div class="col-md-12">
+                                        <textarea formControlName="description" id="description" cols="30" rows="4"
+                                            class="form-control" required></textarea>
+                                        <!-- <ckeditor [editor]="Editor" (ready)="onReady($event)" data="<p>Hello, world!</p>"
+                                formControlName="description" value="description" rows="5" class="form-control"
+                                required></ckeditor> -->
+                                        <div *ngIf="postForm.get('description')?.touched && postForm.get('description')?.invalid"
+                                            class="text-danger">
+                                            <div *ngIf="postForm.get('description')?.errors?.['required']">
+                                                Campo Requerido
+                                            </div>
+                                            <div *ngIf="postForm.get('description')?.errors?.['minlength']">
+                                                Coloque una Descripción detallada
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- <input type="hidden" formControlName="id"> -->
+
+                                <div class="row">
+                                    <div class="col-6">
+                                        <button class="btn btn-success waves-effect waves-light m-r-10 btn-block"
+                                            type="button" (click)="nextStep()">Siguiente</button>
+                                    </div>
+                                    <div class="col-6">
+                                        <button (click)="editPost()" class="btn btn-outline-success">
+                                            {{ postSeleccionado ? 'Actualizar y Continuar' : 'Crear y Continuar' }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div *ngIf="currentStep === 2">
+                            <app-loading *ngIf="isLoadingImage"></app-loading>
+                            <div *ngIf="!isLoadingImage">
+                                <label> Anexe su foto</label>
+                                <br>
+                                <div class="row">
+                                    <div class="especificaciones col-xs-12" *ngIf="!postSeleccionado">
+                                        <h4>Debe Crear un post para agregar la imagen</h4>
+                                    </div>
+                                    <div class="especificaciones col-xs-12 col-sm-6" *ngIf="postSeleccionado">
+                                        <h4>Especificaciones:</h4>
+                                        <ul>
+                                            <li>Tamaño máximo: 300px X 300px</li>
+                                            <li>Peso máximo: 2 mb</li>
+                                            <li>Formato permitido: jpg, .gif, .png</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6" *ngIf="postSeleccionado ">
+                                        <div class="text-center">
+                                            <img *ngIf="!imgTemp " [src]="postSeleccionado.img | imagenPipe: 'blogs'"
+                                                class="img-responsive img-thumbnail" alt="">
+                                            <!-- <img *ngIf="post.img" [src]="post.img | imagenPipe: 'blogs'" class="img-responsive img-thumbnail" alt=""> -->
+                                            <img *ngIf="imgTemp" [src]="imgTemp" class="img-responsive">
+                                            <div class="form-group ">
+
+                                            </div>
+                                        </div>
+                                        <input type="file" (change)="cambiarImagen($event.target.files[0])">
+                                        <br>
+                                        <br>
+
+
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <button
+                                                    class="btn btn-success waves-effect waves-light m-r-10 btn-block"
+                                                    type="button" (click)="prevStep()">Anterior</button>
+                                            </div>
+                                            <div class="col-6">
+                                                <button type="button" [disabled]="!imagenSubir" (click)="subirImagen()"
+                                                    class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+                                                    <i class="fa fa-save"></i> Subir imagen
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="onClose()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--/main-->

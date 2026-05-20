@@ -1,0 +1,58 @@
+.card-body {
+    padding: 14px;
+}
+
+.configuraciones {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.configuraciones .card-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.configuraciones .card-body .bi {
+    font-size: 46px;
+    color: var(--azul);
+}
+
+@media(max-width:768px) {
+    .configuraciones .card-body {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: row;
+    }
+    .configuraciones .card-body.roles {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: column;
+    }
+}
+
+/* Estilo de la Card */
+.card {
+    border-radius: 15px !important;
+    overflow: hidden; /* Para que el header redondeado se aplique bien */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15) !important;
+}
+
+.btn-outline-primary.rounded-circle {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 2px;
+  font-weight: bold;
+}

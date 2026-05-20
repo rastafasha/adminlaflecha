@@ -1,0 +1,31 @@
+.backbutton {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+    width: calc(76vw);
+    justify-content: flex-start;
+}
+
+.pagetitle {
+    display: flex;
+    flex-direction: column;
+}
+
+.pagetitle h1 {
+    font-size: 28px;
+}
+
+.buton {
+    display: flex;
+    height: 34px;
+}
+
+.buton .btn {
+    float: right;
+    right: 0;
+    position: relative;
+    width: 30%;
+    display: flex;
+    justify-content: center;
+}

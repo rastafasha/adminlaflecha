@@ -1,0 +1,116 @@
+<!-- =======| Main |======= -->
+
+<div class="modal fade" id="editProduct" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productModalLabel">{{title}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="onClose()"></button>
+            </div>
+            <div class="modal-body">
+                <!-- <app-loading *ngIf="isLoading"></app-loading> -->
+                <div class="container">
+                    <div class="row">
+                        <form enctype="multipart/form-data" [formGroup]="productopaypalForm">
+                            <div class="row">
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4">
+                                    <label for="exampleInputuname">Nombre<span class="required">*</span></label>
+
+                                    <div class="input-group">
+                                        <input type="text" formControlName="name" class="form-control"
+                                            id="exampleInputuname" placeholder="Nombre" required />
+                                        <div class="clear"></div>
+                                        <div *ngIf="productopaypalForm.get('name')?.touched && productopaypalForm.get('name')?.invalid"
+                                            class="text-danger">
+                                            <div *ngIf="productopaypalForm.get('name')?.errors?.['required']">
+                                                Campo Requerido
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4">
+                                    <div class="form-group">
+                                        <label for="select-input">type<span class="required">*</span></label>
+                                        <select class="form-control" formControlName="type">
+                                            <option disabled value="">SELECCIONAR</option>
+                                            <option value="PHYSICAL">Fisico</option>
+                                            <!-- Si es digital, PayPal espera que lo catalogues como SERVICE -->
+                                            <option value="SERVICE">Digital / Servicio</option>
+                                        </select>
+
+                                        <div *ngIf="productopaypalForm.get('type')?.touched && productopaypalForm.get('type')?.invalid"
+                                            class="text-danger">
+                                            <div *ngIf="productopaypalForm.get('type')?.errors?.['required']">
+                                                Campo Requerido
+                                            </div>
+                                            <div *ngIf="productopaypalForm.get('type')?.errors?.['minlength']">
+                                                Seleccione una opción
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-4 col-md-4">
+                                    <div class="form-group">
+                                        <label for="select-input">category<span class="required">*</span></label>
+                                        <select class="form-control" formControlName="category">
+                                            <option disabled value="">SELECCIONAR</option>
+                                            <option value="SOFTWARE">Software</option>
+                                            <option value="SERVICES_-O_OTHER">Otros Servicios</option>
+                                        </select>
+                                        <div *ngIf="productopaypalForm.get('category')?.touched && productopaypalForm.get('category')?.invalid"
+                                            class="text-danger">
+                                            <div *ngIf="productopaypalForm.get('category')?.errors?.['required']">
+                                                Campo Requerido
+                                            </div>
+                                            <div *ngIf="productopaypalForm.get('category')?.errors?.['minlength']">
+                                                Seleccione una opción
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label>Descripción <span class="required">*</span></label>
+                                <div class="col-md-12">
+                                    <textarea formControlName="description" id="description" cols="10" rows="4"
+                                        class="form-control"></textarea>
+                                    <!-- <ckeditor [editor]="Editor" (ready)="onReady($event)" data="<p>Hello, world!</p>" formControlName="description" value="description" rows="5" class="form-control" required></ckeditor> -->
+                                    <div *ngIf="productopaypalForm.get('description')?.touched && productopaypalForm.get('description')?.invalid"
+                                        class="text-danger">
+                                        <div *ngIf="productopaypalForm.get('description')?.errors?.['required']">
+                                            Campo Requerido
+                                        </div>
+                                        <div *ngIf="productopaypalForm.get('description')?.errors?.['minlength']">
+                                            Seleccione una opción
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <input type="hidden" formControlName="id"> -->
+
+                            <div class="row">
+
+                                <div class="col-6">
+                                    <button (click)="updateProduct()" class="btn btn-outline-success">
+                                        {{ productSeleccionado ? 'Actualizar' : 'Crear' }}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="onClose()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/main-->

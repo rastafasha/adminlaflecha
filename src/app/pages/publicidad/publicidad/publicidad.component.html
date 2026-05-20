@@ -1,0 +1,44 @@
+<!-- =======| Main |======= -->
+<div class="container animated fadeInUp" id="main" class="main" role="main" name="users">
+
+    <div class="col-xs-12">
+        <div class="leftside">
+            <!-- Page Title -->
+            <app-back-button [title]="title"></app-back-button>
+        </div>
+        
+        <div class="clear"></div>
+        <section class="section configuraciones">
+            <button class="btn btn-outline-primary btn-sm rounded-circle shadow-sm" (click)="instruccionesModalAds.open()"
+                title="Ayuda de la sección">
+                <i class="fa fa-question"></i>
+            </button>
+            <br>
+
+            <!-- Recent Pagos -->
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-6  col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <i class="fa fa-picture-o fa-3x"> </i>
+                                <h2> Publicidad lateral</h2>
+                                <a routerLink="/dashboard/publicidad-lateral">
+                                    <button class="btn btn-outline-success btn-block">Ver todos</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <!-- End Recent Pagos -->
+
+        </section>
+    </div>
+
+</div>
+<!--/main-->
+<app-modal-instrucciones [info]="info" sectionId="Publicidad_lateral" #instruccionesModalAds></app-modal-instrucciones>

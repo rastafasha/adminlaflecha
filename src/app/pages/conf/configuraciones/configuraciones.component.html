@@ -1,0 +1,91 @@
+<!-- =======| Main |======= -->
+<div class="container animated fadeInUp" id="main" class="main" role="main" name="users">
+
+    <div class="col-xs-12">
+        <div class="leftside">
+            <app-back-button [title]="title"></app-back-button>
+        </div>
+        
+        <div class="clear"></div>
+        <section class="section configuraciones">
+            
+            <!-- Recent Pagos -->
+            <div class="container">
+                <button class="btn btn-outline-primary btn-sm rounded-circle shadow-sm" (click)="instruccionesModalConf.open()"
+                    title="Ayuda de la sección">
+                    <i class="fa fa-question"></i>
+                </button>
+                <br>
+                
+                <div class="row">
+
+
+                    <!-- <div class="col-xs-12 col-sm-6  col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <i class="bi bi-file-post"></i>
+                                <h2> Planes</h2>
+                                <a routerLink="/dashboard/planes">
+                                    <button class="btn btn-outline-success btn-block">Ver todos</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <div class="col-xs-12 col-sm-6  col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <i class="fa fa-bookmark fa-3x"> </i>
+                                <h2> Categorias</h2>
+                                <a routerLink="/dashboard/categories">
+                                    <button class="btn btn-outline-success btn-block">Ver todos</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6  col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <i class="fa fa-bookmark fa-3x"> </i>
+                                <h2> Especialidades</h2>
+                                <a routerLink="/dashboard/especialidades">
+                                    <button class="btn btn-outline-success btn-block">Ver todos</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-xs-12 col-sm-6  col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <i class="fa fa-bitcoin"> </i>
+                                <h2> Binance Pay</h2>
+                                <a routerLink="/dashboard/binancepay">
+                                    <button class="btn btn-outline-success btn-block">Ver todos</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="col-xs-12 col-sm-6  col-md-4">
+                        <div class="card">
+                            <div class="card-body ">
+                                <i class="fa fa-user-circle-o fa-3x"> </i>
+                                <h2> Roles</h2>
+                                <a routerLink="/dashboard/rolesconf">
+                                    <button class="btn btn-outline-success btn-block">Ver todos</button>
+                                </a>
+                                <!-- <ul>
+                                <li *ngFor="let rol of roles">{{rol.name}}</li>
+                            </ul> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Recent Pagos -->
+
+        </section>
+    </div>
+
+</div>
+<!--/main-->
+<app-modal-instrucciones [info]="info" sectionId="Configuración" #instruccionesModalConf></app-modal-instrucciones>

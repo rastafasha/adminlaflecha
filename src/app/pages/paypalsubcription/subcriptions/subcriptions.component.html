@@ -1,0 +1,88 @@
+<!-- =======| Main |======= -->
+<div class="modal fade" id="viewSubscripciones" tabindex="-1" aria-labelledby="subsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="subsModalLabel">{{planSeleccionado?.name}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="onClose()"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Recent Pagos -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-11 col-sm-11">
+                            <!-- buscador -->
+                            <form class="form-horizontal">
+                                <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+                                    <div class="input-group">
+                                        <input type="search" name="search" type="text" class="form-control col-xs-12"
+                                            placeholder="Buscar.." [(ngModel)]="query" aria-describedby="button-addon1"
+                                            class="form-control border-0 bg-light">
+                                        <div class="input-group-append">
+                                            <button id="button-addon1" type="submit" class="btn btn-link text-primary"
+                                                (click)="search()" name="submit" data-toggle="tooltip"
+                                                title="mostrar todos">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                            <a href="javascript:;" (click)="PageSize()" class="btn btn-primary ms-2 "
+                                                style="border-radius: 100px;"><i class="fa fa-refresh"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- buscador -->
+                        </div>
+
+                    </div>
+                    <div class="card recent-sales overflow-auto">
+                        <app-loading *ngIf="loading"></app-loading>
+                        <div class="card-body" *ngIf="!loading">
+                            <table [ngClass]="loading? 'table table-borderless datatable':'table table-borderless'">
+                                <thead>
+                                    <tr>
+                                        <th>orderID</th>
+                                        <th>Usuario</th>
+                                        <th>plan_id</th>
+                                        <th>Monto</th>
+                                        <th>Status</th>
+                                        <th>Creado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let subcripcion of subcriptions |  paginate: { itemsPerPage: count, currentPage: p }">
+
+                                        <td>
+                                            {{subcripcion.orderID | slice: 0:15}}
+                                        </td>
+                                        <td>
+                                            {{subcripcion?.usuario?.username }}
+                                            
+                                        </td>
+                                        <td>{{subcripcion.plan_id | slice: 0:15}}...</td>
+                                        <td>{{subcripcion.monto|currency}} </td>
+                                        <td>
+                                            <span class="badge bg-success"
+                                                *ngIf="subcripcion.status === 'ACTIVE'">Activo</span>
+                                            <span class="badge bg-danger"
+                                                *ngIf="subcripcion.status === 'INACTIVE'">Inactivo</span>
+                                        </td>
+                                        <td>{{subcripcion.createdAt | date:'MMM d, y'}} </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Recent Pagos -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="onClose()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

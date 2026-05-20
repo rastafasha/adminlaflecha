@@ -1,0 +1,123 @@
+<!-- =======| Main |======= -->
+<div class="container animated fadeInUp" id="main" class="main" role="main" name="users">
+
+    <div class="col-xs-12">
+        <div class="leftside">
+            <!-- Page Title -->
+            <app-back-button [title]="title"></app-back-button>
+        </div>
+
+        <div class="clear"></div>
+        <section class="section dashboard">
+            <button class="btn btn-outline-primary btn-sm rounded-circle shadow-sm" (click)="instruccionesModalPlan.open()"
+                title="Ayuda de la sección">
+                <i class="fa fa-question"></i>
+            </button>
+            <br>
+            <!-- Recent Pagos -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-11 col-sm-11">
+                        <!-- buscador -->
+                        <form class="form-horizontal">
+                            <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+                                <div class="input-group">
+                                    <input type="search" name="search" type="text" class="form-control col-xs-12"
+                                        placeholder="Buscar.." [(ngModel)]="query" aria-describedby="button-addon1"
+                                        class="form-control border-0 bg-light">
+                                    <div class="input-group-append">
+                                        <button id="button-addon1" type="submit" class="btn btn-link text-primary"
+                                            (click)="search()" name="submit" data-toggle="tooltip"
+                                            title="mostrar todos"><i class="fa fa-search"></i></button>
+                                        <a href="javascript:;" (click)="PageSize()" class="btn btn-primary ms-2 "
+                                            style="border-radius: 100px;"><i class="fa fa-refresh"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- buscador -->
+                    </div>
+                    <div class="col-xs-1 col-sm-1">
+                        <div class="text-right">
+                            <button (click)="openEditModal()" class="btn btn-outline-success" data-toggle="tooltip"
+                                data-original-title="Edit" data-bs-toggle="modal" data-bs-target="#editPlan">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card recent-sales overflow-auto">
+                    <app-loading *ngIf="loading"></app-loading>
+                    <div class="card-body" *ngIf="!loading">
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                        <table [ngClass]="loading? 'table table-borderless datatable':'table table-borderless'">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>plan_id</th>
+                                    <th>product_id</th>
+                                    <th>Creado</th>
+                                    <th>Status</th>
+                                    <th>Activar</th>
+                                    <th class="text-nowrap">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let plan of plans |  paginate: { itemsPerPage: count, currentPage: p }">
+
+                                    <td>{{plan.name}}</td>
+                                    <td >
+                                       <span *ngIf="plan.status === 'INACTIVE'">
+                                        {{plan.id}}
+                                       </span>
+                                       <span *ngIf="plan.status === 'ACTIVE'">
+                                         <a (click)="onViewSubscripciones(plan)" data-bs-toggle="modal" class="cursor"
+                                            data-bs-target="#viewSubscripciones">{{plan.id}}
+                                        </a>
+                                       </span>
+                                    </td>
+                                    <td>{{plan.product_id}}</td>
+                                    <td>{{plan.create_time |date}} </td>
+
+                                    <td>
+                                        <!-- {{plan.status }} -->
+                                        <span class="badge bg-success" *ngIf="plan.status === 'ACTIVE'">Activo</span>
+                                        <span class="badge bg-danger" *ngIf="plan.status === 'INACTIVE'">Inactivo</span>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                [id]="'switch' + plan.id" [checked]="plan.status === 'ACTIVE'"
+                                                (change)="toggleStatus(plan)">
+                                            <label class="form-check-label" [for]="'switch' + plan.id">
+                                                {{ plan.status }}
+                                            </label>
+                                        </div>
+
+                                    </td>
+                                    <td class="text-nowrap text-center">
+                                        <button (click)="onEditProject(plan)" class="btn btn-outline-success"
+                                            data-toggle="tooltip" data-original-title="Edit" data-bs-toggle="modal"
+                                            data-bs-target="#editPlan">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                    </div>
+                </div>
+            </div>
+            <!-- End Recent Pagos -->
+
+        </section>
+
+    </div>
+</div>
+<!--/main-->
+<app-paypalsubcription-edit (refreshPlanesList)="getPlanes()" [planSeleccionado]="planSeleccionado"
+    (closeModal)="onClose()" #editPlan></app-paypalsubcription-edit>
+
+<app-subcriptions (refreshPlanesList)="getPlanes()" [planSeleccionado]="planSeleccionado" (closeModal)="onClose()" #viewSubscripciones></app-subcriptions>
+<app-modal-instrucciones [info]="info" sectionId="planes" #instruccionesModalPlan></app-modal-instrucciones>

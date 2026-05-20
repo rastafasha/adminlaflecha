@@ -1,0 +1,122 @@
+<ng-template #loading>
+    <div id="contenedor_carga">
+        <div id="carga"></div>
+    </div>
+</ng-template>
+
+<div *ngIf="user.role === 'SUPERADMIN'|| user.role === 'ADMIN' ">
+    <div class="acces-icons animated fadeIn container">
+        <!-- <a class="nav-link collapsed cursor" routerLink="/dashboard/buscar">
+
+            <div class="icontext ">
+                <i class="fa fa-search"></i>
+                <h3>Buscar</h3>
+            </div>
+        </a> -->
+        <a class="nav-link collapsed cursor" routerLink="/dashboard/paypal-subcription-home">
+
+            <div class="icontext ">
+                <i class="fa fa-paypal"></i>
+                <h3>Planes Paypal </h3>
+            </div>
+        </a>
+        <a class="nav-link collapsed cursor" routerLink="/dashboard/banners">
+
+            <div class="icontext ">
+                <i class="fa fa-desktop"></i>
+                <h3>Banners</h3>
+            </div>
+        </a>
+        <a class="nav-link collapsed cursor" routerLink="/dashboard/categories">
+            <div class="icontext ">
+                <i class="fa fa-bookmark"> </i>
+                <h3>Categorías</h3>
+            </div>
+        </a>
+        <a class="nav-link collapsed cursor" routerLink="/dashboard/posts">
+
+            <div class="icontext ">
+                <i class="fa fa-pencil-square"></i>
+                <h3>Posts</h3>
+            </div>
+        </a>
+        <a class="nav-link collapsed cursor" routerLink="/dashboard/publicidad">
+
+            <div class="icontext ">
+                <i class="fa fa-picture-o"></i>
+                <h3>Publicidad</h3>
+            </div>
+        </a>
+        <a class="nav-link collapsed cursor" routerLink="/dashboard/users">
+
+            <div class="icontext ">
+                <i class="fa fa-users"></i>
+                <h3>Usuarios</h3>
+            </div>
+        </a>
+        <a class="nav-link collapsed cursor" routerLink="/dashboard/compras">
+
+            <div class="icontext ">
+                <i class="fa fa-area-chart"> </i>
+                <h3>Compras</h3>
+            </div>
+        </a>
+        <a class="nav-link collapsed cursor" [routerLink]="['/dashboard/profile/', user.uid]">
+
+            <div class="icontext ">
+                <i class="fa fa-user"> </i>
+                <h3>Cuenta</h3>
+            </div>
+        </a>
+        <a class="nav-link collapsed cursor" routerLink="/dashboard/configuraciones">
+
+            <div class="icontext ">
+                <i class="fa fa-cogs"> </i>
+                <h3>mas</h3>
+            </div>
+        </a>
+
+    </div>
+</div>
+
+<div *ngIf="user.role === 'EDITOR'">
+    <div class="acces-icons animated fadeIn container">
+        <a class="nav-link collapsed cursor" routerLink="/dashboard/banners">
+
+            <div class="icontext ">
+                <i class="fa fa-desktop"></i>
+                <h3>Banners</h3>
+            </div>
+        </a>
+
+        <a class="nav-link collapsed cursor" routerLink="/dashboard/categories">
+
+            <div class="icontext ">
+                <i class="fa fa-info-circle"> </i>
+                <h3>Categorías</h3>
+            </div>
+        </a>
+        <a class="nav-link collapsed cursor" routerLink="/dashboard/posts">
+
+            <div class="icontext ">
+                <i class="fa fa-pencil-square"></i>
+                <h3>Posts</h3>
+            </div>
+        </a>
+        <a class="nav-link collapsed cursor" routerLink="/dashboard/planes/all'">
+
+            <div class="icontext ">
+                <i class="fa fa-bookmark-o"></i>
+                <h3>Planes</h3>
+            </div>
+        </a>
+        <a class="nav-link collapsed cursor" [routerLink]="['/dashboard/profile/', user.id]">
+
+            <div class="icontext ">
+                <i class="fa fa-user-md"> </i>
+                <h3>Cuenta</h3>
+            </div>
+        </a>
+
+    </div>
+</div>

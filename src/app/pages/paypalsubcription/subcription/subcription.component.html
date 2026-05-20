@@ -1,0 +1,40 @@
+<!-- =======| Main |======= -->
+<div class="container animated fadeInUp" id="main" class="main" role="main" name="profile">
+
+    <div class="col-xs-12">
+        <div class="leftside">
+            <!-- Page Title -->
+            <app-back-button [title]="title"></app-back-button>
+        </div>
+        
+        <div class="clear"></div>
+
+        <section class="section dashboard">
+
+            <div class="card pagodetail p-3">
+                <div class="col-xs-12 col-sm-6">
+                    <p><b>orderID:</b> {{subcriptionPaypal.orderID}}</p>
+                    <p><b>payerID:</b> {{subcriptionPaypal.payerID}}</p>
+                    <p><b>Nombre de la cuenta:</b> &nbsp;
+                        <a [routerLink]="['/dashboard/user/', subcriptionPaypal.usuario.uid]">
+                            {{subcriptionPaypal.usuario.username}}</a>
+                        </p>
+                    <p><b>email de la cuenta:</b> {{subcriptionPaypal.email}}</p>
+                    <p><b>Fecha | Hora:</b> {{subcriptionPaypal.createdAt | date:'MMM d, y, h:mm:ss a'}}</p>
+                    <p><b>Status:</b>&nbsp;
+                        <span class="badge bg-success" *ngIf="subcriptionPaypal.status === 'COMPLETED'">Completado</span>
+                        <span class="badge bg-primary" *ngIf="subcriptionPaypal.status === 'PENDING'">Pendiente</span>
+                        <span class="badge bg-danger" *ngIf="subcriptionPaypal.status === 'CANCELED'">Rechazado</span>
+                    </p>
+
+                    <p><b>plan_id:</b> {{subcriptionPaypal.plan_id}}</p>
+                    <p><b>monto:</b> {{subcriptionPaypal.monto|currency}}</p>
+
+                    
+                </div>
+            </div>
+
+        </section>
+    </div>
+</div>
+<!-- End #main-->

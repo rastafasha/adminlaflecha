@@ -1,0 +1,71 @@
+<!-- =======| Main |======= -->
+<div class="container " id="main" class="main" role="main ">
+    <div class="col-xs-12 ">
+        <!-- Page Title -->
+        <div class="pagetitle animated fadeIn">
+            <div class="left">
+                <h1><i class="bx bxs-user-account"></i> {{title}}</h1>
+                <nav>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item active">{{title}}</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="right shadow animated fadeIn">
+                <p>Bienvenido: </p>
+                <span class="badge bg-dark" *ngIf="user.role === 'SUPERADMIN'">SuperAdmin</span>
+                <span class="badge bg-primary" *ngIf="user.role === 'ADMIN'">Admin</span>
+            </div>
+        </div>
+        <br>
+        <div class="clear"></div>
+        <app-menuiconos></app-menuiconos>
+        <section class="section dashboard">
+
+            <div class="row">
+                <div class="card  animated fadeInUp shadow">
+                    <div class="card-body pt-3">
+                        <!-- Bordered Tabs -->
+                        <ul class="nav nav-tabs nav-tabs-bordered">
+
+                            <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#news">Compras
+                                    Recientes</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab"
+                                    data-bs-target="#recentSubcriptions">Subscripciones Recientes</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#recentPayments">Usuarios
+                                    Recientes</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-2">
+
+                            <div class="tab-pane fade show active news" id="news">
+                                <app-pagos-recientes></app-pagos-recientes>
+                            </div>
+                            <div class="tab-pane fade show  recentPayments" id="recentSubcriptions">
+                                <app-subscripciones-recientes></app-subscripciones-recientes>
+                            </div>
+                            <div class="tab-pane fade show  recentPayments" id="recentPayments">
+                                <app-usuarios-recientes></app-usuarios-recientes>
+                            </div>
+                            
+                        </div>
+                        <!-- End Bordered Tabs -->
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+
+
+</div>
+<!--/main-->
+<app-pwa-notif-installer></app-pwa-notif-installer>
+<app-modal-inicial></app-modal-inicial>

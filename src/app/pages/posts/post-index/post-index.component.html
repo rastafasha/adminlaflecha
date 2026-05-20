@@ -1,0 +1,146 @@
+<!-- =======| Main |======= -->
+<div class="container animated fadeInUp" id="main" class="main" role="main" name="users">
+
+    <div class="col-xs-12">
+        <div class="leftside">
+            <!-- Page Title -->
+            <app-back-button [title]="title"></app-back-button>
+        </div>
+        <div class="clear"></div>
+        <section class="section dashboard">
+            <button class="btn btn-outline-primary btn-sm rounded-circle shadow-sm" (click)="instruccionesModalPost.open()"
+                title="Ayuda de la sección">
+                <i class="fa fa-question"></i>
+            </button>
+            <br>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-11 col-sm-11">
+                        <!-- buscador -->
+                        <form class="form-horizontal">
+                            <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+                                <div class="input-group">
+                                    <input type="search" name="search" type="text" class="form-control col-xs-12"
+                                        placeholder="Buscar.." [(ngModel)]="query" aria-describedby="button-addon1"
+                                        class="form-control border-0 bg-light">
+                                    <div class="input-group-append">
+                                        <button id="button-addon1" type="submit" class="btn btn-link text-primary"
+                                            (click)="search()" name="submit" data-toggle="tooltip"
+                                            title="mostrar todos"><i class="fa fa-search"></i></button>
+                                        <a href="javascript:;" (click)="PageSize()" class="btn btn-primary ms-2 "
+                                            style="border-radius: 100px;"><i class="fa fa-refresh"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- buscador -->
+                    </div>
+                    <div class="col-xs-1 col-sm-1">
+                        <div class="text-right">
+                            <button (click)="openEditModal()" class="btn btn-outline-success"
+                                            data-toggle="tooltip" data-original-title="Edit"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editPost">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card recent-sales overflow-auto">
+
+                    <app-loading *ngIf="loading"></app-loading>
+                    <div class="card-body" *ngIf="!loading">
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                        <table class="table table-borderless datatable">
+                            <thead>
+                                <tr>
+                                    <th>imagen</th>
+                                    <th>title</th>
+                                    <th>Por</th>
+                                    <th>Destacado?</th>
+                                    <th>Precio</th>
+                                    <th>Categoria</th>
+                                    <th>Status</th>
+                                    <th>Accion</th>
+                                    <th class="text-nowrap">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let blog of blogs |  paginate: { itemsPerPage: count, currentPage: p }">
+                                    <td>
+                                        <div class="image">
+                                            <div *ngIf="!blog.img ">
+                                                <img [src]="blog.img | imagenPipe: 'blogs'"
+                                                    style="height: 50px; width: 50px;" class="img-circle avatar">
+                                            </div>
+                                            <div *ngIf="blog.img">
+                                                <img [src]="blog.img | imagenPipe: 'blogs'"
+                                                    style="height: 50px; width: 50px;" class="img-circle avatar">
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{blog.name}}</td>
+                                    <td><a [routerLink]="['/dashboard/user/', blog.usuario.uid]">
+                                            {{blog.usuario.username}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-success" *ngIf="blog.isFeatured === true">Si</span>
+                                        <span class="badge bg-danger" *ngIf="blog.isFeatured === false">No</span>
+                                    </td>
+
+
+                                    <td>{{blog.price|currency}} </td>
+                                    <td>{{blog.categoria.nombre}} </td>
+
+                                    <td>
+                                        <span class="badge bg-success" *ngIf="blog.status === 'Activo'">Publicado</span>
+                                        <span class="badge bg-danger" *ngIf="blog.status === 'Desactivado'">No
+                                            Publicado</span>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                [id]="'switch' + blog._id" [checked]="blog.status === 'Activo'"
+                                                (change)="toggleStatus(blog)">
+                                            <label class="form-check-label" [for]="'switch' + blog._id">
+                                                {{ blog.status }}
+                                            </label>
+                                        </div>
+
+                                    </td>
+                                    <td class="text-nowrap text-center">
+                                        <button (click)="onEditProject(blog)" class="btn btn-outline-success"
+                                            data-toggle="tooltip" data-original-title="Edit"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editPost">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                         &nbsp;
+                                        <button (click)="eliminarPost(blog._id)" class="btn btn-outline-danger" data-toggle="tooltip"
+                                            data-original-title="Borrar">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- End Recent Pagos -->
+
+        </section>
+    </div>
+
+</div>
+<!--/main-->
+<app-post-edit (refreshPostList)="getPosts()" [postSeleccionado]="postSeleccionado" (closeModal)="onClose()" #editPost></app-post-edit>
+<app-modal-instrucciones [info]="info" sectionId="Publicaciones" #instruccionesModalPost></app-modal-instrucciones>

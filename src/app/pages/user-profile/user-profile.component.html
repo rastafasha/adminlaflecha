@@ -1,0 +1,272 @@
+<!-- =======| Main |======= -->
+<div class="container animated fadeInUp" id="main" class="main" role="main" name="profile">
+
+    <div class="col-xs-12">
+        <div class="leftside">
+            <!-- Page Title -->
+            <app-back-button [title]="title"></app-back-button>
+        </div>
+
+        <div class="clear"></div>
+
+        <section class="section profile">
+            <div class="row">
+                <div class="col-xl-3">
+
+                    <div class="card">
+                        <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                            <div *ngIf="!profile">
+                                <img src="./assets/images/no-image.jpg" class="rounded-circle">
+                            </div>
+                            <div *ngIf="profile">
+                                <img [src]="profile.img | imagenPipe: 'profiles'" class="rounded-circle">
+                            </div>
+
+                            <h3>{{usuario.username}}</h3>
+                            <p>{{usuario.email}}</p>
+                            <h3>
+                                <span class="badge bg-dark" *ngIf="usuario.role === 'SUPERADMIN'">SuperAdmin</span>
+                                <span class="badge bg-primary" *ngIf="usuario.role === 'ADMIN'">Admin</span>
+                                <span class="badge bg-success" *ngIf="usuario.role === 'EDITOR'">Editor</span>
+                                <span class="badge bg-success" *ngIf="usuario.role === 'MEMBER'">Miembro</span>
+                                <span class="badge bg-secondary" *ngIf="usuario.role === 'USER'">Invitado</span>
+                            </h3>
+
+                            <a routerLink="/dashboard/rolesconf">
+                                <button class="btn btn-outline-primary btn-sm">Modificar Rol</button>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-xl-9">
+
+                    <div class="card">
+                        <div class="card-body pt-3">
+                            <!-- Bordered Tabs -->
+                            <ul class="nav nav-tabs nav-tabs-bordered">
+
+                                <li class="nav-item">
+                                    <button class="nav-link active" data-bs-toggle="tab"
+                                        data-bs-target="#detalle">Detalles</button>
+                                </li>
+                                <li class="nav-item" *ngIf="pagos.length > 0" >
+                                    <button class="nav-link " data-bs-toggle="tab" data-bs-target="#historial">Historial
+                                        Compras</button>
+                                </li>
+                                <li class="nav-item"  >
+                                    <button class="nav-link " data-bs-toggle="tab"
+                                        data-bs-target="#subcripciones">Historial Subscripciones</button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link "
+                                        *ngIf="usuario.role === 'EDITOR'|| usuario.role === 'SUPERADMIN' || usuario.role === 'ADMIN'"
+                                        data-bs-toggle="tab" data-bs-target="#blogs">Blogs Creados</button>
+                                </li>
+
+
+
+                            </ul>
+                            <div class="tab-content pt-2">
+                                <div class="tab-pane fade show active detail  pt-3" id="detalle">
+
+
+                                    <div *ngIf="!profile">
+                                        <p>No posee perfil</p>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div *ngIf="profile">
+                                            <div class="row">
+                                                <div class="col-xs-6 col-sm-6 col-md-6 b-r">
+                                                    <div class="col-12  label"> Nombre</div>
+                                                    <div class="col-12  info">{{profile.first_name}}</div>
+                                                </div>
+                                                <div class="col-xs-6 col-sm-6 col-md-6 ">
+                                                    <div class="col-12  label">Apellido</div>
+                                                    <div class="col-12  info">{{profile.last_name}}</div>
+                                                </div>
+
+                                            </div>
+                                            <hr>
+
+                                            <div class="row">
+
+                                                <div class="col-xs-6 col-sm-6 col-md-6 b-r">
+                                                    <div class="col-12  label"> Móvil</div>
+                                                    <div class="col-12  info">
+                                                        <a href="tel:{{profile.telmovil}}" target="_blank">
+                                                            {{profile.telmovil}}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6 col-sm-6 col-md-6 ">
+                                                    <div class="col-12  label">Oficina |  Home</div>
+                                                    <div class="col-12  info">
+                                                        <a href="tel:{{profile.telhome}}" target="_blank">
+                                                            {{profile.telhome}}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-6 col-md-4 b-r">
+                                                    <div class="col-12  label">Pais</div>
+                                                    <div class="col-12 info">{{profile.pais}}</div>
+                                                </div>
+                                                <div class="col-xs-6 col-sm-6 col-md-4 b-r">
+                                                    <div class="col-12  label"> Estado</div>
+                                                    <div class="col-12  info">{{profile.estado}}</div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-6 col-md-4 ">
+                                                    <div class="col-12  label">Descripcion Corta </div>
+                                                    <div class="col-12  info">
+                                                        <p>{{profile.shortdescription}}</p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                 <div class="col-12  label"> Redes Sociales</div>
+                                                <div *ngFor="let red of redssociales">
+                                                    <div class="col-xs-12 col-sm-6 col-md-3 b-r">
+                                                    <div class="info">
+                                                        <a [href]="'https://' +red.name_red +'.com/'+red.usuario_red"
+                                                            target="_blank" rel="noopener noreferrer">
+                                                            <i class="fa {{red.icono}}"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row"
+                                                *ngIf="usuario.role === 'EDITOR'|| usuario.role === 'SUPERADMIN' || usuario.role === 'ADMIN'">
+                                                <div class="col-xs-12 col-sm-6  b-r">
+                                                    <div class="col-12  label"> Email Paypal</div>
+                                                    <div class="col-12 info">{{profile.emailPaypal}}</div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-6  b-r">
+                                                    <div class="col-12  label"> Nombre Paypal</div>
+                                                    <div class="col-12  info">{{profile.nombrePaypal}}</div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                                <!-- compras -->
+                                <div class="tab-pane fade  historial" id="historial">
+                                    <pagination-controls *ngIf="pagos.length > 6" (pageChange)="p = $event"></pagination-controls>
+                                    <ul
+                                        *ngFor="let payment of pagos |  paginate: { itemsPerPage: count, currentPage: p }">
+
+                                        <li class="listgridHistorial">
+                                            <div class="imagenblog">
+                                                <img src="./assets/images/no-image.jpg" style="width:50px; height:50px"
+                                                    class="rounded-circle">
+
+                                            </div>
+                                            <a [routerLink]="['/dashboard/payment-detail', payment._id]">
+                                                <span class="titulourl">
+                                                    Referencia: {{payment.referencia}}
+                                                </span>
+                                            </a>
+                                            <span class="date">
+                                                Fecha: {{payment.createdAt | date:'MMM d, y, h:mm:ss a'}}
+                                            </span>
+                                            <span class="monto">
+                                                Monto: {{payment.monto | currency}}
+                                            </span>
+                                            <span class="status">
+                                                status: {{payment.status }}
+                                            </span>
+                                        </li>
+                                    </ul>
+                                    <br />
+
+
+
+                                </div>
+                                <!-- subcripciones -->
+
+                                <div class="tab-pane fade historial  subcripciones" id="subcripciones">
+                                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                    <ul
+                                        *ngFor="let subcription of subcriptions |  paginate: { itemsPerPage: count, currentPage: p }">
+
+
+                                        <li class="listgridSubcripcione">
+                                            <span class="orderId">
+                                                orderID: {{subcription.orderID}}
+                                            </span>
+                                            <span class="planid">
+                                                plan_id: {{subcription.plan_id}}
+                                            </span>
+                                            <span class="dates">
+                                                Fecha: {{subcription.createdAt | date:'MMM d, y, h:mm:ss a'}}
+                                            </span>
+                                            <span class="montos">
+                                                Monto: {{subcription.monto | currency}}
+                                            </span>
+                                            <span class="statuss">
+                                                status: {{subcription.status }}
+                                            </span>
+                                        </li>
+                                    </ul>
+
+
+
+                                </div>
+                                <!-- blogs -->
+                                <div class="tab-pane fade  blogs" id="blogs">
+                                    <pagination-controls  (pageChange)="p = $event"></pagination-controls>
+                                    <ul *ngFor="let blog of blogs|  paginate: { itemsPerPage: count, currentPage: p }"
+                                        style="margin: 0; padding: 0;">
+
+                                        <li class="listgrid">
+                                            <div>
+                                                <div *ngIf="!blog.img " class="imagenblog">
+                                                    <img [src]="blog.img | imagenPipe: 'blogs'"
+                                                        style="height: 50px; width: 50px;" class="img-circle avatar">
+                                                </div>
+                                                <div *ngIf="blog.img" class="imagenblog">
+                                                    <img [src]="blog.img | imagenPipe: 'blogs'"
+                                                        style="height: 50px; width: 50px;" class="img-circle avatar">
+
+                                                </div>
+                                            </div>
+                                            <a class="titulourl" [routerLink]="['/dashboard/post/edit', blog._id]">
+                                                Referencia: {{blog.name}}
+                                            </a>
+                                            <span class="date">
+                                                Fecha: {{blog.createdAt | date:'MMM d, y, h:mm:ss a'}}
+                                            </span>
+                                        </li>
+                                    </ul>
+
+
+
+                                </div>
+
+
+
+
+
+
+                            </div>
+                            <!-- End Bordered Tabs -->
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+</div>
+<!--/main-->

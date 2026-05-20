@@ -1,0 +1,143 @@
+<!-- =======| Main |======= -->
+<div class="container animated fadeInUp" id="main" class="main" role="main" name="users">
+
+    <div class="col-xs-12">
+        <div class="leftside">
+            <app-back-button [title]="title"></app-back-button>
+        </div>
+        
+        <div class="clear"></div>
+
+         <app-loading *ngIf="isLoading"></app-loading>
+        <div class="tab-content-set" *ngIf="!isLoading">
+            <ul class="nav">
+                <li>
+                    <a href="#" onclick="return false;" [ngClass]="{'active': option_selectedd == 1}"
+                        (click)="optionSelected(1)">
+                        <h3 class="btn btn-outline-info"> {{'Usuarios'}}</h3>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="return false;" [ngClass]="{'active': option_selectedd == 2}"
+                        (click)="optionSelected(2)">
+                        <h3 class="btn btn-outline-info">{{'Usuarios Admin'}}</h3>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
+        <div *ngIf="option_selectedd == 1">
+            <section class="section dashboard" *ngIf="!isLoading">
+            <!-- Recent Pagos -->
+            <div class="container">
+                <div class="card recent-sales overflow-auto">
+                    <div class="card-body">
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                        <table class="table table-borderless datatable':'table table-borderless">
+                            <thead>
+                                <tr>
+
+                                    <th>Username</th>
+                                    <th>email</th>
+                                    <th>Role</th>
+                                    <th>Role Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let user of users | userRolePipe  |  paginate: { itemsPerPage: count, currentPage: p }">
+                                
+                                    <td><a [routerLink]="['/dashboard/user/', user.uid]">{{user.username}}</a></td>
+
+                                    <td>{{user.email}} </td>
+                                    <td>
+                                        <span class="badge bg-dark" *ngIf="user.role === 'SUPERADMIN'">SuperAdmin</span>
+                                        <span class="badge bg-primary" *ngIf="user.role === 'ADMIN'">Admin</span>
+                                        <span class="badge bg-success" *ngIf="user.role === 'EDITOR'">Editor</span>
+                                        <span class="badge bg-success" *ngIf="user.role === 'MEMBER'">Miembro</span>
+                                        <span class="badge bg-danger" *ngIf="user.role === 'USER'">Invitado</span>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" [(ngModel)]="user.role" (change)="cambiarRole(user)">
+                                          <option value="SUPERADMIN">Super Admin</option>
+                                          <option value="ADMIN">Admin</option>
+                                          <option value="EDITOR">Editor</option>
+                                          <option value="MEMBER">Miembro</option>
+                                          <option value="USER">Invitado</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- End Recent Pagos -->
+
+        </section>
+        </div>
+
+        <div *ngIf="option_selectedd == 2">
+            <section class="section dashboard" *ngIf="!isLoading">
+            <!-- Recent Pagos -->
+            <div class="container">
+                <div class="card recent-sales overflow-auto">
+                    <div class="card-body">
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                        <table class="table table-borderless datatable':'table table-borderless">
+                            <thead>
+                                <tr>
+
+                                    <th>Username</th>
+                                    <th>email</th>
+                                    <th>Role</th>
+                                    <th>Role Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let user of users | adminRolesPipe  |  paginate: { itemsPerPage: count, currentPage: p }">
+                                
+                                    <td><a [routerLink]="['/dashboard/user/', user.uid]">{{user.username}}</a></td>
+
+                                    <td>{{user.email}} </td>
+                                    <td>
+                                        <span class="badge bg-dark" *ngIf="user.role === 'SUPERADMIN'">SuperAdmin</span>
+                                        <span class="badge bg-primary" *ngIf="user.role === 'ADMIN'">Admin</span>
+                                        <span class="badge bg-success" *ngIf="user.role === 'EDITOR'">Editor</span>
+                                        <span class="badge bg-success" *ngIf="user.role === 'MEMBER'">Miembro</span>
+                                        <span class="badge bg-danger" *ngIf="user.role === 'USER'">Invitado</span>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" [(ngModel)]="user.role" (change)="cambiarRole(user)">
+                                          <option value="SUPERADMIN">Super Admin</option>
+                                          <option value="ADMIN">Admin</option>
+                                          <option value="EDITOR">Editor</option>
+                                          <option value="MEMBER">Miembro</option>
+                                          <option value="USER">Invitado</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- End Recent Pagos -->
+
+        </section>
+        </div>
+        
+
+    </div>
+</div>
+<!--/main-->
