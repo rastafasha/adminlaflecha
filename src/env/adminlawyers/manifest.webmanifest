@@ -1,6 +1,6 @@
 {
-  "name": "adminArticleApp",
-  "short_name": "adminArticleApp",
+  "name": "admin-LaFlecha",
+  "short_name": "admin-LaFlecha",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
