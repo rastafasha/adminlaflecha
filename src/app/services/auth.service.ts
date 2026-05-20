@@ -132,7 +132,7 @@ export class AuthService {
   }
 
   closeMenu() {
-    var menuLateral = document.getElementsByClassName("sidemenu ");
+    var menuLateral = document.getElementsByClassName("sidebar ");
     for (var i = 0; i < menuLateral.length; i++) {
       menuLateral[i].classList.remove("active");
     }

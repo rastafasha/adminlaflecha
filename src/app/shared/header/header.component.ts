@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit {
   error: string;
   id: any;
   profile: Profile;
-  user_id:string
+  user_id: string
 
   constructor(
     private usuarioService: UserService,
@@ -30,13 +30,20 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private profileService: ProfileService,
   ) {
+     this.user = authService.getLocalStorage();
   }
 
 
 
   ngOnInit() {
-    this.user_id = this.authService.uid;
-    this.getProfile()
+    
+    if (!this.user || !this.user.uid || this.user.uid == null || this.user.uid == undefined) {
+      this.router.navigateByUrl('/login');
+    } else {
+      this.id = this.user.uid;
+      this.getProfile();
+    }
+
     if (localStorage.getItem('dark')) {
       this.darkmode('dark');
     }
