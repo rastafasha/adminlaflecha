@@ -36,7 +36,7 @@
                                             <option disabled value="">SELECCIONAR</option>
                                             <option value="PHYSICAL">Fisico</option>
                                             <!-- Si es digital, PayPal espera que lo catalogues como SERVICE -->
-                                            <option value="SERVICES_OTHER">Digital / Servicio</option>
+                                            <option value="SERVICE">Digital / Servicio</option>
                                         </select>
 
                                         <div *ngIf="productopaypalForm.get('type')?.touched && productopaypalForm.get('type')?.invalid"
@@ -56,7 +56,7 @@
                                         <select class="form-control" formControlName="category">
                                             <option disabled value="">SELECCIONAR</option>
                                             <option value="SOFTWARE">Software</option>
-                                            <option value="SERVICES_-O_OTHER">Otros Servicios</option>
+                                            <option value="SERVICES_OTHER">Otros Servicios</option>
                                         </select>
                                         <div *ngIf="productopaypalForm.get('category')?.touched && productopaypalForm.get('category')?.invalid"
                                             class="text-danger">
