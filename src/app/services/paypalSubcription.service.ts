@@ -67,7 +67,7 @@ export class PlanPaypalSubcriptionService {
       );
   }
 
-  updatePlan(planPaypal: planPaypalSubcription) {
+  updatePlan(planPaypal: any) {
     const url = `${baseUrl}/paypal/editar-plan/${planPaypal.id}`;
     return this.http.patch(url, planPaypal, this.headers);
 

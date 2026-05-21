@@ -119,16 +119,16 @@ export class PaypalsubcriptionEditComponent implements OnInit, OnChanges {
 
 
   validarFormulario() {
-  this.planpaypalForm = this.fb.group({
-    name: ['', [Validators.required, Validators.minLength(3)]],
-    product_id: ['', Validators.required], // ID por defecto
-    status: ['ACTIVE'],
-    total_cycles: [0], // 0 = Infinito
-    fixed_price: ['0.00', [Validators.required]], // Por defecto 0.00
-    setup_fee: ['0.00'],
-    interval_unit: ['MONTH', Validators.required], // MONTH, YEAR, etc.
-  });
-}
+    this.planpaypalForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      product_id: ['', Validators.required], // ID por defecto
+      status: ['ACTIVE'],
+      total_cycles: [0], // 0 = Infinito
+      fixed_price: ['0.00', [Validators.required]], // Por defecto 0.00
+      setup_fee: ['0.00'],
+      interval_unit: ['MONTH', Validators.required], // MONTH, YEAR, etc.
+    });
+  }
 
   get name() {
     return this.planpaypalForm.get('name');
@@ -166,14 +166,21 @@ export class PaypalsubcriptionEditComponent implements OnInit, OnChanges {
     }
 
 
-    const { name, product_id, status, interval_unit,
-      total_cycles, setup_fee, percentage, fixed_price } = this.planpaypalForm.value;
+    const {
+      name,
+      product_id,
+      interval_unit,
+      total_cycles,
+      setup_fee,
+      fixed_price
+    } = this.planpaypalForm.value;
 
     if (this.planSeleccionado) {
       //actualizar
       const data = {
-        ...this.planpaypalForm.value,
-        id: this.planSeleccionado.id
+        id: this.planSeleccionado.id,
+        name: name,
+        description: "Acceso completo a herramientas de la app y beneficios exclusivos"
       }
       this.planpaypalService.updatePlan(data).subscribe(
         resp => {
@@ -192,25 +199,29 @@ export class PaypalsubcriptionEditComponent implements OnInit, OnChanges {
     } else {
       //crear
 
+      // Validamos y formateamos los precios de forma segura contra NaN o vacíos
+      const precioFijoFormateado = parseFloat(fixed_price || 0).toFixed(2);
+      const cuotaInicialFormateada = parseFloat(setup_fee || 0).toFixed(2);
+
       // 1. CREAMOS EL CUERPO CON LA ESTRUCTURA QUE PAYPAL EXIGE
       const bodyPayPal = {
         product_id: product_id,
         name: name,
-        description: "Acceso limitado a 3 articulos",
+        description: "Acceso completo a herramientas de la app y beneficios exclusivos",
         billing_cycles: [
           {
             frequency: {
-              interval_unit: interval_unit,
+              interval_unit: (interval_unit || 'MONTH').toUpperCase(),
               interval_count: 1
             },
             tenure_type: "REGULAR",
             sequence: 1,
             // Si el usuario pone 0, PayPal lo entiende como cobros infinitos
-           total_cycles: total_cycles || 0,
+            total_cycles: Number(total_cycles) || 0,
             pricing_scheme: {
               fixed_price: {
                 // .toFixed(2) asegura que 10 se convierta en "10.00"
-                value: parseFloat(fixed_price || 0).toFixed(2).toString(), 
+                value: precioFijoFormateado,
                 currency_code: "USD"
               }
             }
@@ -219,30 +230,31 @@ export class PaypalsubcriptionEditComponent implements OnInit, OnChanges {
         payment_preferences: {
           auto_bill_outstanding: true,
           setup_fee: {
-            value: parseFloat(setup_fee).toFixed(2).toString(),
+            value: cuotaInicialFormateada,
             currency_code: "USD"
           },
           setup_fee_failure_action: "CONTINUE",
           payment_failure_threshold: 3
         }
       }
-     
 
-      console.log('Objeto que sale hacia el backend:', bodyPayPal);
       this.planpaypalService.createPlanSubcription(bodyPayPal)
         .subscribe((resp: any) => {
-          Swal.fire('Creado', `creado correctamente`, 'success');
-          // Close modal programmatically
-          const modalElement = document.getElementById('editPlan');
-          const modal = bootstrap.Modal.getInstance(modalElement);
-          if (modal) {
-            modal.hide();
-          }
-          // Emit event to refresh project list
-          this.refreshPlanesList.emit();
-          this.ngOnInit();
+
+          this.notificarYLimpiar('Creado', 'creado correctamente');
         })
     }
+  }
+
+  private notificarYLimpiar(titulo: string, mensaje: string) {
+    Swal.fire(titulo, mensaje, 'success');
+    const modalElement = document.getElementById('editPlan');
+    const modal = bootstrap.Modal.getInstance(modalElement);
+    if (modal) {
+      modal.hide();
+    }
+    this.refreshPlanesList.emit();
+    this.ngOnInit();
   }
 
 }
