@@ -13,6 +13,7 @@ import { planPaypalSubcription } from 'src/app/models/planPaypalSubcription';
 import { PlanPaypalSubcriptionService } from 'src/app/services/paypalSubcription.service';
 import { DocumentRegistroService } from 'src/app/services/document-registro.service';
 import { DocumentoRegistro } from 'src/app/models/documentoRegistro.model';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -36,65 +37,48 @@ export class UserProfileComponent implements OnInit {
   rolesSelected: number;
   documentos: DocumentoRegistro[] = [];
 
+  isLoadingDoc = false;
+  isLoading = false;
+
   p: number = 1;
   count: number = 8;
   redssociales: RedesSociales[] = [];
+  docSeleccionado: DocumentoRegistro;
 
   constructor(
-    private userService: UserService,
+    private authService: AuthService,
     private profileService: ProfileService,
-    private paymentService: PaymentService,
     private postService: PostService,
     private documentsRService: DocumentRegistroService,
     private activatedRoute: ActivatedRoute,
     private subcriptionPaypalService: PlanPaypalSubcriptionService,
 
   ) {
-    this.usuario = userService.usuario;
   }
 
   ngOnInit(): void {
     window.scrollTo(0, 0);
-    this.closeMenu();
-    this.activatedRoute.params.subscribe(({ id }) => this.getUserRemoto(id));
+    this.authService.closeMenu();
     this.activatedRoute.params.subscribe(({ id }) => this.getProfile(id));
     this.activatedRoute.params.subscribe(({ id }) => this.getBlogs(id));
     this.activatedRoute.params.subscribe(({ id }) => this.getDocumentos(id));
   }
 
-  closeMenu() {
-    var menuLateral = document.getElementsByClassName("sidebar");
-    for (var i = 0; i < menuLateral.length; i++) {
-      menuLateral[i].classList.remove("active");
-
-    }
-  }
-
-
-
-  getUserRemoto(id) {
-    this.userService.getUserById(id).subscribe(
-      res => {
-        this.usuario = res;
-        error => this.error = error;
-        // console.log(this.usuario);
-      }
-    );
-
-  }
+  
 
   getProfile(id: string) {
-
     this.profileService.getByUser(id).subscribe(
-      (res:any) => {
+      (res: any) => {
         this.profile = res.profile;
+        this.usuario = res.profile.usuario;
+        console.log(res)
         this.subcriptions = res.profile.subcription;
         this.pagos = res.profile.pagos;
         if (typeof res.profile.redssociales === 'string') {
-            this.redssociales = JSON.parse(res.profile.redssociales);
-          } else {
-            this.redssociales = res.profile.redssociales || [];
-          }
+          this.redssociales = JSON.parse(res.profile.redssociales);
+        } else {
+          this.redssociales = res.profile.redssociales || [];
+        }
         error => this.error = error;
       }
     );
@@ -102,22 +86,11 @@ export class UserProfileComponent implements OnInit {
   }
 
   getUserSubcription(id: string) {
-
     this.subcriptionPaypalService.getByUser(id).subscribe((data: any) => {
       this.subcriptions = data;
     });
   }
 
-
-  updateUser(userprofile: Profile) {
-    this.profileService.updateProfile(userprofile).subscribe(
-      resp => {
-        console.log(resp);
-        Swal.fire('Actualizado', `actualizado correctamente`, 'success');
-
-      }
-    )
-  }
 
   getBlogs(_id: string) {
     this.postService.getByUser(_id).subscribe(
@@ -130,30 +103,110 @@ export class UserProfileComponent implements OnInit {
   }
 
   getDocumentos(id: string) {
-    this.documentsRService.getDocumentsByUser(id).subscribe((resp:any)=>{
+    this.isLoadingDoc = true;
+    this.documentsRService.getDocumentsByUser(id).subscribe((resp: any) => {
       this.documentos = resp;
-      console.log(this.documentos);
+      this.isLoadingDoc = false;
     })
   }
 
-   cambiarStatus(doc: DocumentoRegistro) {
-      // this.isLoading= true;
-      // this.documentsRService.updateStatus(user).subscribe(
-      //   resp =>{ 
-      //     this.isLoading= false;
-      //     Swal.fire('Actualizado', `actualizado rol correctamente`, 'success');
-      //     this.getUsers();
-      //   }
-      // )
+  cambiarStatus(data: any) {
+    const nuevoEstado = data.status;
+    const id = data._id;
+
+    // 1. Caso: RECHAZADO (Pide motivo)
+    if (nuevoEstado === 'REFUSED') {
+      Swal.fire({
+        title: 'Motivo del Rechazo',
+        input: 'text',
+        inputPlaceholder: 'Ej: Capture borroso, monto incompleto...',
+        showCancelButton: true,
+        confirmButtonText: 'Rechazar y Notificar',
+        confirmButtonColor: '#d33', // Rojo para peligro
+        cancelButtonText: 'Cancelar',
+        inputValidator: (value) => {
+          if (!value) return '¡Debes escribir un motivo para el usuario!';
+          return null;
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.ejecutarUpdateStatus(id, nuevoEstado, result.value);
+        } else {
+          this.ngOnInit(); // Revierte el select si cancela
+        }
+      });
+
+    // 2. Caso: APROBADO (Confirmación de seguridad)
+    } else if (nuevoEstado === 'APROVED') {
+      Swal.fire({
+        title: '¿Confirmar Aprobación?',
+        text: `¿Estás seguro de marcar como APROBADO el documento de ${data.tipoDoc}?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, Aprobar',
+        confirmButtonColor: '#198754', // Verde para éxito
+        cancelButtonText: 'No, revisar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.ejecutarUpdateStatus(id, nuevoEstado);
+        } else {
+          this.ngOnInit(); // Revierte el select si se arrepiente
+        }
+      });
+
+    } else {
+      // 3. Caso: PENDIENTE (Cambio directo)
+      this.ejecutarUpdateStatus(id, nuevoEstado);
     }
-   cambiarStatusProf(profile: Profile){
-      // this.isLoading= true;
-      // this.documentsRService.updateStatus(user).subscribe(
-      //   resp =>{ 
-      //     this.isLoading= false;
-      //     Swal.fire('Actualizado', `actualizado rol correctamente`, 'success');
-      //     this.getUsers();
-      //   }
-      // )
+}
+
+// Función auxiliar para no repetir código del subscribe
+private ejecutarUpdateStatus(id: string, nuevoEstado: string, observaciones: string = '') {
+    const payload = {
+      status: nuevoEstado,
+      observaciones: observaciones // Esto llegará a tu backend para el mensaje del Push/Toastr
+    };
+
+    this.documentsRService.updateStatus(payload, id).subscribe({
+      next: (resp) => {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: nuevoEstado === 'APROVED' ? '✅ Documento Aprobado' : '❌ Documento Rechazado',
+          color: 'gray',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        this.ngOnInit();
+      },
+      error: (err) => {
+        Swal.fire('Error', 'No se pudo actualizar el pago', 'error');
+        this.ngOnInit();
+      }
+    });
+}
+
+  cambiarStatusProf(profile: Profile) {
+    this.isLoading= true;
+    const data ={
+      status: profile.status
     }
+    this.profileService.updateStatus(data, profile._id).subscribe(
+      resp =>{ 
+        this.isLoading= false;
+        Swal.fire('Actualizado', `actualizado rol correctamente`, 'success');
+        this.ngOnInit();
+      }
+    )
+  }
+
+  onEditProject(doc: DocumentoRegistro) {
+    this.docSeleccionado = doc;
+  }
+
+  onCloseModal(): void {
+    this.docSeleccionado = null;
+  }
+  onClose(){}
+
 }

@@ -69,7 +69,7 @@ export class DocumentRegistroService {
     const URL = baseUrl + '/documentregistro/actualizar/' + document_id;
     return this.http.post(URL, data, this.headers);
   }
-  updateStatus(data: any, document_id: number) {
+  updateStatus(data: any, document_id: any) {
     const url = `${baseUrl}/documentregistro/update-status/${document_id}`;
     return this.http.put(url, data, this.headers);
   }

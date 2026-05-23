@@ -65,13 +65,18 @@ export class ProfileService {
 
 
   createProfile(profile:Profile) {
-    const url = `${baseUrl}/profile/crear`;
+    const url = `${baseUrl}/profile/store`;
     return this.http.post(url, profile, this.headers);
   }
 
   updateProfile(profile:Profile) {
-    const url = `${baseUrl}/profile/editar/${profile._id}`;
+    const url = `${baseUrl}/profile/update/${profile._id}`;
     return this.http.put(url, profile, this.headers);
+  }
+
+  updateStatus(data: any, profile_id: any) {
+    const url = `${baseUrl}/profile/update-status/${profile_id}`;
+    return this.http.put(url, data, this.headers);
   }
 
   deleteProfile(_id: string) {

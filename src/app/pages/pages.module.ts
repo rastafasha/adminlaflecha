@@ -37,6 +37,7 @@ import { BusquedaComponent } from './busqueda/busqueda.component';
 import { PaypalsubcriptionModule } from './paypalsubcription/paypalsubcription.module';
 import { PublicidadModule } from './publicidad/publicidad.module';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { ViewDocComponent } from './user-profile/view-doc/view-doc.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     PostEditComponent,
     BannerEditComponent,
     BannerIndexComponent,
-    BusquedaComponent
+    BusquedaComponent,
+    ViewDocComponent
   ],
   exports: [
     DashboardComponent,
@@ -78,7 +80,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     PostEditComponent,
     BannerEditComponent,
     BannerIndexComponent,
-    BusquedaComponent
+    BusquedaComponent,
+    ViewDocComponent
   ],
   imports: [
     CommonModule,

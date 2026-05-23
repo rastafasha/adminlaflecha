@@ -8,6 +8,7 @@ export class DocumentoRegistro {
       resolution!: string;
       file!: string;
       type!: string;
+      observaciones!: string;
        status?: 'PENDING' | 'APROVED' | 'REFUSED';
        tipoDoc!: string;
       usuario!: User;

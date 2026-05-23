@@ -12,6 +12,7 @@ import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post.service';
 import { planPaypalSubcription } from 'src/app/models/planPaypalSubcription';
 import { PlanPaypalSubcriptionService } from 'src/app/services/paypalSubcription.service';
+import { PaisService } from 'src/app/services/pais.service';
 
 
 @Component({
@@ -81,6 +82,7 @@ export class ProfileComponent implements OnInit {
     private fileUploadService: FileUploadService,
     private postService: PostService,
     private subcriptionPaypalService: PlanPaypalSubcriptionService,
+    private paisService: PaisService,
 
   ) {
     this.usuario = this.userService.usuario;
@@ -93,7 +95,7 @@ export class ProfileComponent implements OnInit {
     this.getUser();
     this.validarFormularioPerfil();
     this.activatedRoute.params.subscribe( ({id}) => this.getUserProfile(id));
-   
+    this.getPaisesList();
     // this.listar();
     
   }
@@ -126,7 +128,15 @@ export class ProfileComponent implements OnInit {
     this.activatedRoute.params.subscribe( ({id}) => this.iniciarFormularioPerfil(id));
     this.activatedRoute.params.subscribe( ({id}) => this.getBlogs(id));
     this.activatedRoute.params.subscribe( ({id}) => this.getUserSubcription(id));
+    
+  }
 
+   getPaisesList(): void {
+    this.paisService.getPaises().subscribe(
+      (res: any) => {
+        this.paises = res.paises;
+      }
+    );
   }
 
   listar(id:string){

@@ -1,0 +1,59 @@
+<!-- =======| Main |======= -->
+
+<div class="modal fade" id="viewDocumentModal" tabindex="-1" aria-labelledby="documentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="documentModalLabel">{{title}}: {{document?.tipoDoc}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onClose()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <app-loading *ngIf="isLoading"></app-loading>
+          <div class="row" *ngIf="!isLoading">
+             <div style="height: 100vh; overflow: hidden; overflow-y: scroll;"
+                *ngIf="document?.type !== 'application/pdf'">
+                <img class="embed-responsive-item " *ngIf="document?.type !== 'application/pdf'" [src]="document?.file "
+                  style="width: 100%; height: auto;" />
+              </div>
+
+              <div *ngIf="document?.type === 'application/pdf'">
+                <div class="visor-layout">
+
+                  <!-- Tarjeta lateral de metadatos (la que ya tienes a la izquierda) -->
+                  <div class="sidebar-info">
+                    <!-- Aquí va tu recuadro con NOMBRE, CATEGORÍA, TAMAÑO... -->
+                  </div>
+
+                  <!-- Contenedor del PDF/Imagen (Centrado y con tamaño controlado) -->
+                  <div class="document-workspace">
+                    <div class="pdf-card">
+
+                      <!-- La etiqueta <object> carga el visor oficial del navegador del usuario -->
+                      <object *ngIf="document?.type === 'application/pdf'"
+                        [data]="getPDFIframe( document?.file | imagenPipe: 'docregistros' )" type="application/pdf"
+                        class="pdf-element">
+
+                        <!-- Código de respaldo por si el navegador es muy viejo -->
+                        <p>Tu navegador no puede mostrar este PDF.
+                          <a [href]="document?.file" target="_blank">Haz clic aquí para descargarlo</a>
+                        </p>
+
+                      </object>
+
+                    </div>
+                  </div>
+
+
+                </div>
+
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="onClose()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

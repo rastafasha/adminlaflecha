@@ -19,28 +19,28 @@
                                 <img src="./assets/images/no-image.jpg" class="rounded-circle">
                             </div>
                             <div *ngIf="profile">
-                                <img [src]="profile.img | imagenPipe: 'profiles'" class="rounded-circle">
+                                <img [src]="profile?.img | imagenPipe: 'profiles'" class="rounded-circle">
                             </div>
 
-                            <h3>{{usuario.username}}</h3>
-                            <p>{{usuario.email}}</p>
+                            <h3>{{usuario?.username}}</h3>
+                            <p>{{usuario?.email}}</p>
                             <h3>
-                                <span class="badge bg-dark" *ngIf="usuario.role === 'SUPERADMIN'">SuperAdmin</span>
-                                <span class="badge bg-primary" *ngIf="usuario.role === 'ADMIN'">Admin</span>
-                                <span class="badge bg-success" *ngIf="usuario.role === 'EDITOR'">Editor</span>
-                                <span class="badge bg-success" *ngIf="usuario.role === 'MEMBER'">Miembro</span>
-                                <span class="badge bg-secondary" *ngIf="usuario.role === 'USER'">Invitado</span>
+                                <span class="badge bg-dark" *ngIf="usuario?.role === 'SUPERADMIN'">SuperAdmin</span>
+                                <span class="badge bg-primary" *ngIf="usuario?.role === 'ADMIN'">Admin</span>
+                                <span class="badge bg-success" *ngIf="usuario?.role === 'EDITOR'">Editor</span>
+                                <span class="badge bg-success" *ngIf="usuario?.role === 'MEMBER'">Miembro</span>
+                                <span class="badge bg-secondary" *ngIf="usuario?.role === 'USER'">Invitado</span>
                             </h3>
 
                             <a routerLink="/dashboard/rolesconf">
                                 <button class="btn btn-outline-primary btn-sm">Modificar Rol</button>
                             </a>
                             <select class="form-control mt-3" [(ngModel)]="profile.status"
-                                                (change)="cambiarStatusProf(profile)">
-                                                <option value="PENDING">Pendiente</option>
-                                                <option value="VERIFIED">Verificado</option>
-                                                <option value="REVIEW">En Revisión</option>
-                                            </select>
+                                (change)="cambiarStatusProf(profile)">
+                                <option value="PENDING">Pendiente</option>
+                                <option value="VERIFIED">Verificado</option>
+                                <option value="REVIEW">En Revisión</option>
+                            </select>
                         </div>
                     </div>
 
@@ -96,12 +96,9 @@
                                                     <div class="col-12  label">Apellido</div>
                                                     <div class="col-12  info">{{profile.last_name}}</div>
                                                 </div>
-
                                             </div>
                                             <hr>
-
                                             <div class="row">
-
                                                 <div class="col-xs-6 col-sm-6 col-md-6 b-r">
                                                     <div class="col-12  label"> Móvil</div>
                                                     <div class="col-12  info">
@@ -209,41 +206,51 @@
                                 </div>
                                 <!-- documentos -->
                                 <div class="tab-pane fade  documentos" id="documentos">
-                                    <ul
-                                        *ngFor="let doc of documentos |  paginate: { itemsPerPage: count, currentPage: p }">
+                                    <app-loading *ngIf="isLoadingDoc"></app-loading>
+                                    <div *ngIf="!isLoadingDoc">
+                                        <div class="row" *ngFor="let doc of documentos ">
+                                            <div class="card col-xs-12 col-md-6 col-sm-6 shadow-sm">
+                                                <div class="card-header">
+                                                    <h4> Tipo Documento: {{doc.tipoDoc}}</h4>
+                                                </div>
+                                                <div class="card-body d-flex flex-column gap-2">
+                                                    <p>
+                                                        <b>tipo:</b> {{doc.type}}
+                                                    </p>
+                                                    <p>
+                                                        <b>Fecha:</b> {{doc.createdAt | date:'MMM d, y, h:mm:ss a'}}
+                                                    </p>
+                                                    <p>
+                                                        <b>status:</b>
+                                                        <span class="badge bg-primary"
+                                                            *ngIf="doc.status === 'PENDING'">Pendiente</span>
+                                                        <span class="badge bg-success"
+                                                            *ngIf="doc.status === 'APROVED'">Aprobado</span>
+                                                        <span class="badge bg-danger"
+                                                            *ngIf="doc.status === 'REFUSED'">Rechazado</span>
+                                                    </p>
+                                                    <button (click)="onEditProject(doc)" class="btn btn-outline-success"
+                                                        data-toggle="tooltip" data-original-title="Edit"
+                                                        data-bs-toggle="modal" data-bs-target="#viewDocumentModal">
+                                                        <i class="fa fa-eye"></i>
+                                                    </button>
 
-                                        <li>
-                                            <div class="imagenblog">
-                                                <img src="./assets/images/no-image.jpg" style="width:50px; height:50px"
-                                                    class="rounded-circle">
 
+                                                    <select class="form-select fw-bolder" [(ngModel)]="doc.status"
+                                                        (change)="cambiarStatus(doc)" [ngClass]="{
+                                                'border-success text-success': doc.status === 'APROVED',
+                                                'border-warning text-warning': doc.status === 'PENDING',
+                                                'border-danger text-danger': doc.status === 'REFUSED'
+                                            }">
+                                                        <option value="PENDING">Pendiente</option>
+                                                        <option value="APROVED">Aprobado</option>
+                                                        <option value="REFUSED">Rechazado</option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                            <a [routerLink]="['/dashboard/payment-detail', doc._id]">
-                                                <span class="titulourl">
-                                                    file: {{doc.file}}
-                                                </span>
-                                            </a>
-                                            <span class="date">
-                                                tipoDoc: {{doc.tipoDoc}}
-                                            </span>
-                                            <span class="date">
-                                                tipo: {{doc.type}}
-                                            </span>
-                                            <span class="date">
-                                                Fecha: {{doc.createdAt | date:'MMM d, y, h:mm:ss a'}}
-                                            </span>
-                                            <span class="status">
-                                                status: {{doc.status }}
-                                            </span>
+                                        </div>
 
-                                            <select class="form-control" [(ngModel)]="doc.status"
-                                                (change)="cambiarStatus(doc)">
-                                                <option value="PENDING">Pendiente</option>
-                                                <option value="APROVED">Aprobado</option>
-                                                <option value="REFUSED">Rechazado</option>
-                                            </select>
-                                        </li>
-                                    </ul>
+                                    </div>
                                     <br />
 
 
@@ -328,3 +335,5 @@
 
 </div>
 <!--/main-->
+<app-view-doc (refreshBannerList)="getDocumentos(user.uid)" [docSeleccionado]="docSeleccionado" (closeModal)="onClose()"
+    #viewDocumentModal></app-view-doc>
