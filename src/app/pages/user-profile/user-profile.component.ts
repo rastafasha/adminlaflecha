@@ -11,6 +11,8 @@ import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post.service';
 import { planPaypalSubcription } from 'src/app/models/planPaypalSubcription';
 import { PlanPaypalSubcriptionService } from 'src/app/services/paypalSubcription.service';
+import { DocumentRegistroService } from 'src/app/services/document-registro.service';
+import { DocumentoRegistro } from 'src/app/models/documentoRegistro.model';
 
 @Component({
   selector: 'app-user-profile',
@@ -32,6 +34,7 @@ export class UserProfileComponent implements OnInit {
   uid: string;
 
   rolesSelected: number;
+  documentos: DocumentoRegistro[] = [];
 
   p: number = 1;
   count: number = 8;
@@ -42,6 +45,7 @@ export class UserProfileComponent implements OnInit {
     private profileService: ProfileService,
     private paymentService: PaymentService,
     private postService: PostService,
+    private documentsRService: DocumentRegistroService,
     private activatedRoute: ActivatedRoute,
     private subcriptionPaypalService: PlanPaypalSubcriptionService,
 
@@ -55,6 +59,7 @@ export class UserProfileComponent implements OnInit {
     this.activatedRoute.params.subscribe(({ id }) => this.getUserRemoto(id));
     this.activatedRoute.params.subscribe(({ id }) => this.getProfile(id));
     this.activatedRoute.params.subscribe(({ id }) => this.getBlogs(id));
+    this.activatedRoute.params.subscribe(({ id }) => this.getDocumentos(id));
   }
 
   closeMenu() {
@@ -94,7 +99,6 @@ export class UserProfileComponent implements OnInit {
       }
     );
 
-
   }
 
   getUserSubcription(id: string) {
@@ -124,4 +128,32 @@ export class UserProfileComponent implements OnInit {
       }
     );
   }
+
+  getDocumentos(id: string) {
+    this.documentsRService.getDocumentsByUser(id).subscribe((resp:any)=>{
+      this.documentos = resp;
+      console.log(this.documentos);
+    })
+  }
+
+   cambiarStatus(doc: DocumentoRegistro) {
+      // this.isLoading= true;
+      // this.documentsRService.updateStatus(user).subscribe(
+      //   resp =>{ 
+      //     this.isLoading= false;
+      //     Swal.fire('Actualizado', `actualizado rol correctamente`, 'success');
+      //     this.getUsers();
+      //   }
+      // )
+    }
+   cambiarStatusProf(profile: Profile){
+      // this.isLoading= true;
+      // this.documentsRService.updateStatus(user).subscribe(
+      //   resp =>{ 
+      //     this.isLoading= false;
+      //     Swal.fire('Actualizado', `actualizado rol correctamente`, 'success');
+      //     this.getUsers();
+      //   }
+      // )
+    }
 }

@@ -35,6 +35,12 @@
                             <a routerLink="/dashboard/rolesconf">
                                 <button class="btn btn-outline-primary btn-sm">Modificar Rol</button>
                             </a>
+                            <select class="form-control mt-3" [(ngModel)]="profile.status"
+                                                (change)="cambiarStatusProf(profile)">
+                                                <option value="PENDING">Pendiente</option>
+                                                <option value="VERIFIED">Verificado</option>
+                                                <option value="REVIEW">En Revisión</option>
+                                            </select>
                         </div>
                     </div>
 
@@ -51,11 +57,15 @@
                                     <button class="nav-link active" data-bs-toggle="tab"
                                         data-bs-target="#detalle">Detalles</button>
                                 </li>
-                                <li class="nav-item" *ngIf="pagos.length > 0" >
+                                <li class="nav-item" *ngIf="pagos.length > 0">
                                     <button class="nav-link " data-bs-toggle="tab" data-bs-target="#historial">Historial
                                         Compras</button>
                                 </li>
-                                <li class="nav-item"  >
+                                <li class="nav-item">
+                                    <button class="nav-link " data-bs-toggle="tab"
+                                        data-bs-target="#documentos">Documentos</button>
+                                </li>
+                                <li class="nav-item">
                                     <button class="nav-link " data-bs-toggle="tab"
                                         data-bs-target="#subcripciones">Historial Subscripciones</button>
                                 </li>
@@ -101,7 +111,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-xs-6 col-sm-6 col-md-6 ">
-                                                    <div class="col-12  label">Oficina |  Home</div>
+                                                    <div class="col-12  label">Oficina | Home</div>
                                                     <div class="col-12  info">
                                                         <a href="tel:{{profile.telhome}}" target="_blank">
                                                             {{profile.telhome}}
@@ -113,32 +123,37 @@
                                             <div class="row">
                                                 <div class="col-xs-12 col-sm-6 col-md-4 b-r">
                                                     <div class="col-12  label">Pais</div>
-                                                    <div class="col-12 info">{{profile.pais}}</div>
+                                                    <div class="col-12 info">{{profile.pais.pais}}</div>
                                                 </div>
                                                 <div class="col-xs-6 col-sm-6 col-md-4 b-r">
-                                                    <div class="col-12  label"> Estado</div>
-                                                    <div class="col-12  info">{{profile.estado}}</div>
+                                                    <div class="col-12  label"> Especialidad</div>
+                                                    <div class="col-12  info">{{profile.especialidad.nombre}}</div>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-6 col-md-4 ">
-                                                    <div class="col-12  label">Descripcion Corta </div>
+                                                    <div class="col-12  label">Num Impre </div>
                                                     <div class="col-12  info">
-                                                        <p>{{profile.shortdescription}}</p>
+                                                        <p>{{profile.num_inpre}}</p>
 
                                                     </div>
                                                 </div>
                                             </div>
                                             <hr>
                                             <div class="row">
-                                                 <div class="col-12  label"> Redes Sociales</div>
+                                                <div class="col-12  label"> Descripcion Corta</div>
+                                                <p>{{profile.shortdescription}}</p>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-12  label"> Redes Sociales</div>
                                                 <div *ngFor="let red of redssociales">
                                                     <div class="col-xs-12 col-sm-6 col-md-3 b-r">
-                                                    <div class="info">
-                                                        <a [href]="'https://' +red.name_red +'.com/'+red.usuario_red"
-                                                            target="_blank" rel="noopener noreferrer">
-                                                            <i class="fa {{red.icono}}"></i>
-                                                        </a>
+                                                        <div class="info">
+                                                            <a [href]="'https://' +red.name_red +'.com/'+red.usuario_red"
+                                                                target="_blank" rel="noopener noreferrer">
+                                                                <i class="fa {{red.icono}}"></i>
+                                                            </a>
+                                                        </div>
                                                     </div>
-                                                </div>
                                                 </div>
                                             </div>
                                             <hr>
@@ -160,7 +175,8 @@
                                 </div>
                                 <!-- compras -->
                                 <div class="tab-pane fade  historial" id="historial">
-                                    <pagination-controls *ngIf="pagos.length > 6" (pageChange)="p = $event"></pagination-controls>
+                                    <pagination-controls *ngIf="pagos.length > 6"
+                                        (pageChange)="p = $event"></pagination-controls>
                                     <ul
                                         *ngFor="let payment of pagos |  paginate: { itemsPerPage: count, currentPage: p }">
 
@@ -184,6 +200,48 @@
                                             <span class="status">
                                                 status: {{payment.status }}
                                             </span>
+                                        </li>
+                                    </ul>
+                                    <br />
+
+
+
+                                </div>
+                                <!-- documentos -->
+                                <div class="tab-pane fade  documentos" id="documentos">
+                                    <ul
+                                        *ngFor="let doc of documentos |  paginate: { itemsPerPage: count, currentPage: p }">
+
+                                        <li>
+                                            <div class="imagenblog">
+                                                <img src="./assets/images/no-image.jpg" style="width:50px; height:50px"
+                                                    class="rounded-circle">
+
+                                            </div>
+                                            <a [routerLink]="['/dashboard/payment-detail', doc._id]">
+                                                <span class="titulourl">
+                                                    file: {{doc.file}}
+                                                </span>
+                                            </a>
+                                            <span class="date">
+                                                tipoDoc: {{doc.tipoDoc}}
+                                            </span>
+                                            <span class="date">
+                                                tipo: {{doc.type}}
+                                            </span>
+                                            <span class="date">
+                                                Fecha: {{doc.createdAt | date:'MMM d, y, h:mm:ss a'}}
+                                            </span>
+                                            <span class="status">
+                                                status: {{doc.status }}
+                                            </span>
+
+                                            <select class="form-control" [(ngModel)]="doc.status"
+                                                (change)="cambiarStatus(doc)">
+                                                <option value="PENDING">Pendiente</option>
+                                                <option value="APROVED">Aprobado</option>
+                                                <option value="REFUSED">Rechazado</option>
+                                            </select>
                                         </li>
                                     </ul>
                                     <br />
@@ -223,7 +281,7 @@
                                 </div>
                                 <!-- blogs -->
                                 <div class="tab-pane fade  blogs" id="blogs">
-                                    <pagination-controls  (pageChange)="p = $event"></pagination-controls>
+                                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
                                     <ul *ngFor="let blog of blogs|  paginate: { itemsPerPage: count, currentPage: p }"
                                         style="margin: 0; padding: 0;">
 

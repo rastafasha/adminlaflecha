@@ -1,32 +1,36 @@
 import { environment } from "src/environments/environment";
 import { Post } from "./post";
 import { User } from "./user";
+import { Speciality } from "./speciality.model";
+import { Pais } from "./pais";
 const base_url = environment.apiUrlMedia;
 export class Profile {
-
-
   constructor(
-
     public first_name: string,
     public last_name: string,
-    public direccion: string,
-    public pais: string,
-    public estado: string,
+    public n_doc: string,
+    public num_inpre: string,
+    public gender: number,
+    public pais: Pais,
     public ciudad: string,
+    public lang: string,
     public telhome: string,
     public telmovil: string,
+    public direccion: string,
     public shortdescription: string,
-    public emailPaypal: string,
-    public nombrePaypal: string,
-    // public emailBinance: string,
-    // public userIdBinance: string,
-    public facebook: string,
-    public instagram: string,
-    public twitter: string,
-    public linkedin: string,
+    public redssociales: RedesSociales,
+    public plan: string,
+    public fechaReinicio: Date,
+    public paypalSubscriptionId: string,
+    // public subcription: subcriptionPaypal[] = [],
     public createdAt: Date,
     public updatedAt: Date,
+    public rating?:number,
+    public status?: 'PENDING' | 'REVIEW' | 'VERIFIED',
+    public articulosVistos?: number,
     public usuario?: User,
+    // public blog?: Post,
+    public especialidad?: Speciality,
     public img?: string,
     public _id?: string
 

@@ -172,17 +172,10 @@ export class ProfileComponent implements OnInit {
             last_name: this.profile.last_name,
             direccion: this.profile.direccion,
             pais: this.profile.pais,
-            estado: this.profile.estado,
             ciudad: this.profile.ciudad,
             telhome: this.profile.telhome,
             telmovil: this.profile.telmovil,
             shortdescription: this.profile.shortdescription,
-            emailPaypal: this.profile.emailPaypal,
-            nombrePaypal: this.profile.nombrePaypal,
-            facebook: this.profile.facebook,
-            instagram: this.profile.instagram,
-            twitter: this.profile.twitter,
-            linkedin: this.profile.linkedin,
             usuario: this.usuario.uid,
             img: this.profile.img
           });
