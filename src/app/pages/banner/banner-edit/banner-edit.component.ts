@@ -278,9 +278,9 @@ export class BannerEditComponent implements OnInit, OnChanges {
   subirImagen() {
     this.loadingImage = true;
     this.fileUploadService
-      .actualizarFoto(this.imagenSubir, 'banners', this.banner._id)
+      .actualizarFoto(this.imagenSubir, 'banners', this.bannerSeleccionado._id)
       .then(img => {
-        this.banner.img = img;
+        this.bannerSeleccionado.img = img;
         this.loadingImage = false;
         Swal.fire('Listo', 'Imagen subida correctamente', 'success');
         // Aquí ya puedes cerrar el modal o refrescar la lista

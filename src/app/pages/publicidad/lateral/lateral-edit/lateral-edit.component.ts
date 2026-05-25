@@ -82,6 +82,7 @@ export class LateralEditComponent implements OnInit, OnChanges {
 
   onClose() {
     this.adSeleccionado = null;
+    this.adSeleccionado.img = null;
     this.currentStep = 1;
     this.sideadviceForm.reset();
     this.title = 'Creando Publicidad Lateral';
@@ -186,6 +187,7 @@ export class LateralEditComponent implements OnInit, OnChanges {
       }
       this.sideadviceService.createBanner(data).subscribe(
         (resp: any) => {
+          this.adSeleccionado = resp.sideadvice
           Swal.fire('¡Paso 1 completado!', 'Post creado. Ahora sube la imagen.', 'success');
           // Como estmos creando, al finalizar debe ir al paso 2 para subir la imagen
           this.currentStep = 2;
@@ -211,9 +213,9 @@ export class LateralEditComponent implements OnInit, OnChanges {
   subirImagen() {
     this.loadingImage = true;
     this.fileUploadService
-      .actualizarFoto(this.imagenSubir, 'sideadvertisings', this.sideadvice._id)
+      .actualizarFoto(this.imagenSubir, 'sideadvertisings', this.adSeleccionado._id)
       .then(img => {
-        this.sideadvice.img = img;
+        this.adSeleccionado.img = img;
         this.loadingImage = false;
         Swal.fire('Guardado', 'La imagen fue actualizada', 'success');
         this.refreshAdList.emit();

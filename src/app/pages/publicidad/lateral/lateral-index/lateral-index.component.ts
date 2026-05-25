@@ -44,6 +44,9 @@ export class LateralIndexComponent implements OnInit {
       }
     );
   }
+   PageSize() {
+    this.getAds();
+  }
 
   eliminarCurso(sideadvice:Sideadvice){
 
