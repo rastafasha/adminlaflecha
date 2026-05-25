@@ -30,7 +30,10 @@ export class AuthInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         // SOLO si el error es 401 (Token inválido/expirado)
         if (error.status === 401) {
-          localStorage.clear();
+          // localStorage.clear();
+          localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('estaAutenticado');
           Swal.fire({
             title: 'Sesión expirada',
             text: 'Por favor inicia sesión nuevamente.',

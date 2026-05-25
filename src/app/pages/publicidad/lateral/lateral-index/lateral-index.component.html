@@ -6,30 +6,21 @@
             <!-- Page Title -->
             <app-back-button [title]="title"></app-back-button>
         </div>
-
-
         <div class="clear"></div>
-
-
         <section class="section dashboard">
-
-
             <!-- Recent Pagos -->
-
             <div class="container">
                 <div class="row">
-                    
+
                     <div class="col-xs-2 col-sm-2 mb-3">
                         <div class="text-right button-group d-flex">
-                           <button (click)="openEditModal()" class="btn btn-outline-success"
-                                            data-toggle="tooltip" data-original-title="Edit"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#editAd">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                           <button (click)="PageSize()" class="btn btn-outline-primary">
-                                            <i class="fa fa-refresh"></i>
-                                        </button>
+                            <button (click)="openEditModal()" class="btn btn-outline-success" data-toggle="tooltip"
+                                data-original-title="Edit" data-bs-toggle="modal" data-bs-target="#editAd">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                            <button (click)="PageSize()" class="btn btn-outline-primary">
+                                <i class="fa fa-refresh"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -91,16 +82,15 @@
 
                                     </td>
                                     <td class="text-nowrap text-center">
-                                        
+
                                         <button (click)="onEditProject(sideadvice)" class="btn btn-outline-success"
-                                            data-toggle="tooltip" data-original-title="Edit"
-                                            data-bs-toggle="modal"
+                                            data-toggle="tooltip" data-original-title="Edit" data-bs-toggle="modal"
                                             data-bs-target="#editAd">
                                             <i class="fa fa-edit"></i>
                                         </button>
-                                         &nbsp;
-                                        <button (click)="eliminarCurso(sideadvice._id)" class="btn btn-outline-danger" data-toggle="tooltip"
-                                            data-original-title="Borrar">
+                                        &nbsp;
+                                        <button (click)="eliminarCurso(sideadvice._id)" class="btn btn-outline-danger"
+                                            data-toggle="tooltip" data-original-title="Borrar">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </td>
@@ -121,4 +111,5 @@
 
 </div>
 
-<app-lateral-edit (refreshAdList)="getAds()" [adSeleccionado]="adSeleccionado" (closeModal)="onClose()" #editAd></app-lateral-edit>
+<app-lateral-edit (refreshAdList)="getAds()" [adSeleccionado]="adSeleccionado" (closeModal)="onClose()"
+    #editAd></app-lateral-edit>
