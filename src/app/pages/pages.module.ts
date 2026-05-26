@@ -38,6 +38,7 @@ import { PaypalsubcriptionModule } from './paypalsubcription/paypalsubcription.m
 import { PublicidadModule } from './publicidad/publicidad.module';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ViewDocComponent } from './user-profile/view-doc/view-doc.component';
+import { TasadiabcvComponent } from '../components/tasadiabcv/tasadiabcv.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { ViewDocComponent } from './user-profile/view-doc/view-doc.component';
     BannerEditComponent,
     BannerIndexComponent,
     BusquedaComponent,
-    ViewDocComponent
+    ViewDocComponent,
+    TasadiabcvComponent
   ],
   exports: [
     DashboardComponent,
@@ -81,7 +83,8 @@ import { ViewDocComponent } from './user-profile/view-doc/view-doc.component';
     BannerEditComponent,
     BannerIndexComponent,
     BusquedaComponent,
-    ViewDocComponent
+    ViewDocComponent,
+    TasadiabcvComponent
   ],
   imports: [
     CommonModule,

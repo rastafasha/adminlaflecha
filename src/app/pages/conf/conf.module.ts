@@ -21,6 +21,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { EspecIndexComponent } from './especialidades/espec-index/espec-index.component';
 import { EspecEditComponent } from './especialidades/espec-edit/espec-edit.component';
+import { TasabcvComponent } from './tasabcv/tasabcv.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { EspecEditComponent } from './especialidades/espec-edit/espec-edit.compo
     CategoryEditComponent,
     CategoryIndexComponent,
     EspecIndexComponent,
-    EspecEditComponent
+    EspecEditComponent,
+    TasabcvComponent
 
   ],
   exports: [
@@ -38,7 +40,8 @@ import { EspecEditComponent } from './especialidades/espec-edit/espec-edit.compo
     CategoryEditComponent,
     CategoryIndexComponent,
     EspecIndexComponent,
-    EspecEditComponent
+    EspecEditComponent,
+    TasabcvComponent
     // PaymentmethodEditComponent
   ],
   imports: [

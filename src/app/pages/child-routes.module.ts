@@ -25,6 +25,7 @@ import { PublicidadComponent } from './publicidad/publicidad/publicidad.componen
 import { LateralIndexComponent } from './publicidad/lateral/lateral-index/lateral-index.component';
 import { ProductListComponent } from './paypalsubcription/products/product-list/product-list.component';
 import { EspecIndexComponent } from './conf/especialidades/espec-index/espec-index.component';
+import { TasabcvComponent } from './conf/tasabcv/tasabcv.component';
 
 
 
@@ -39,6 +40,7 @@ const childRoutes: Routes = [
     { path: 'buscar', component: BusquedaComponent, data:{tituloPage:'Busquedas'} },
     { path: 'buscar/:termino', component: BusquedaComponent, data:{tituloPage:'Busquedas'} },
     { path: 'rolesconf', component: RolesViewComponent, data:{title:'Planes'} },
+    { path: 'tasaBCV', component: TasabcvComponent, data:{title:'Tasa BCV'} },
 
     { path: 'categories', component: CategoryIndexComponent, data:{title:'Categoria'} },
     { path: 'especialidades', component: EspecIndexComponent, data:{title:'Especialidades'} },

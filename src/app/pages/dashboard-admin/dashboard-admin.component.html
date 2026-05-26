@@ -2,7 +2,7 @@
 <div class="container " id="main" class="main" role="main ">
     <div class="col-xs-12 ">
         <!-- Page Title -->
-        <div class="pagetitle animated fadeIn">
+        <div class="pagetitle animated fadeIn ">
             <div class="left">
                 <h1><i class="bx bxs-user-account"></i> {{title}}</h1>
                 <nav>
@@ -11,6 +11,7 @@
                     </ol>
                 </nav>
             </div>
+            <app-tasadiabcv></app-tasadiabcv>
             <div class="right shadow animated fadeIn">
                 <p>Bienvenido: </p>
                 <span class="badge bg-dark" *ngIf="user.role === 'SUPERADMIN'">SuperAdmin</span>
